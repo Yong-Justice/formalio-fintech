@@ -330,7 +330,7 @@ export const MobileApp: React.FC = () => {
               animate={{ opacity: 1 }}
               className="text-3xl font-bold mb-3"
             >
-              {showBalance ? '1,245,000 FCFA' : '••••••••'}
+              {showBalance ? '1 245 000 FCFA' : '••••••••'}
             </motion.p>
             <div className="flex items-center gap-3">
               <div className="flex items-center gap-1 bg-white/10 px-2 py-1 rounded-lg">
@@ -436,7 +436,7 @@ export const MobileApp: React.FC = () => {
                   </div>
                 </div>
                 <span className={`text-sm font-semibold ${t.type === 'income' ? 'text-formalio-600' : 'text-danger-500'}`}>
-                  {t.type === 'income' ? '+' : '-'}{t.amount.toLocaleString('fr-FR')}
+                  {t.type === 'income' ? '+' : '-'}{t.amount.toLocaleString('fr-FR')} FCFA
                 </span>
               </motion.div>
             ))}
@@ -460,7 +460,7 @@ export const MobileApp: React.FC = () => {
             <div className="flex-1">
               <p className="text-sm font-semibold text-surface-900 mb-1">Prêt pré-approuvé !</p>
               <p className="text-xs text-surface-600 mb-2">
-                Avec votre Score Mosika de 760, vous êtes éligible pour 2M FCFA à 7.5% / an.
+                Avec votre Score Mosika de 760, vous êtes éligible pour 2 000 000 FCFA à 7,5 % / an.
               </p>
               <button
                 onClick={() => navigate('credit-score')}
@@ -575,7 +575,7 @@ export const MobileApp: React.FC = () => {
                   </div>
                 </div>
                 <span className={`text-sm font-bold whitespace-nowrap ml-2 ${t.type === 'income' ? 'text-formalio-600' : 'text-danger-500'}`}>
-                  {t.type === 'income' ? '+' : '-'}{t.amount.toLocaleString('fr-FR')}
+                  {t.type === 'income' ? '+' : '-'}{t.amount.toLocaleString('fr-FR')} FCFA
                 </span>
               </motion.div>
             ))}
@@ -1243,8 +1243,8 @@ export const MobileApp: React.FC = () => {
     <ScreenWrapper title="Abonnement">
       <div className="bg-gradient-to-br from-formalio-800 to-formalio-900 rounded-2xl p-5 text-white mb-4 text-center">
         <p className="text-sm text-white/70 mb-1">Plan Actuel</p>
-        <p className="text-2xl font-bold">Croissance</p>
-        <p className="text-sm text-white/70 mt-1">4,900 FCFA/mois</p>
+        <p className="text-2xl font-bold">Pro</p>
+        <p className="text-sm text-white/70 mt-1">8 000 FCFA/mois</p>
         <div className="mt-3 inline-flex items-center gap-1 bg-white/10 px-3 py-1 rounded-full text-xs">
           <CheckCircle2 className="w-3 h-3" />
           Renouvellement: 15 Fév 2025
@@ -1310,7 +1310,7 @@ export const MobileApp: React.FC = () => {
       <div className="text-center mb-6">
         <AnimatedMascot state="celebrate" size={100} />
         <h2 className="text-lg font-semibold text-surface-900 mt-3">Parrainez et Gagnez</h2>
-        <p className="text-sm text-surface-500">Gagnez 1,000 FCFA par ami parrainé</p>
+        <p className="text-sm text-surface-500">Gagnez 1 000 FCFA par ami parrainé</p>
       </div>
       <div className="bg-gradient-to-br from-gold-50 to-gold-100/50 border border-gold-200 rounded-2xl p-5 text-center mb-4">
         <p className="text-sm text-gold-700 mb-2">Votre code de parrainage</p>

@@ -50,9 +50,9 @@ export const DesktopDashboard: React.FC = () => {
   const DashboardView = () => (
     <div className="space-y-6">
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-        <StatCard title="Solde Total" value={showBalance ? "12,450,000 FCFA" : "••••••••"} change="+12.5%" positive icon={Wallet} />
-        <StatCard title="Revenus (Mois)" value="8,500,000 FCFA" change="+8.2%" positive icon={TrendingUp} />
-        <StatCard title="Dépenses (Mois)" value="4,200,000 FCFA" change="-3.1%" positive icon={BarChart3} />
+        <StatCard title="Solde Total" value={showBalance ? "12 450 000 FCFA" : "••••••••"} change="+12.5%" positive icon={Wallet} />
+        <StatCard title="Revenus (Mois)" value="8 500 000 FCFA" change="+8.2%" positive icon={TrendingUp} />
+        <StatCard title="Dépenses (Mois)" value="4 200 000 FCFA" change="-3.1%" positive icon={BarChart3} />
         <StatCard title="Score Mosika" value="760" change="+15 pts" positive icon={CreditCard} />
       </div>
 

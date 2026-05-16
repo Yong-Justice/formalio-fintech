@@ -18,6 +18,8 @@ const iconMap: Record<string, React.ReactNode> = {
   Smartphone: <Smartphone className="w-6 h-6" />,
   TrendingUp: <TrendingUp className="w-6 h-6" />,
   Zap: <Zap className="w-6 h-6" />,
+  MessageCircle: <MessageCircle className="w-6 h-6" />,
+  Users: <Users className="w-6 h-6" />,
 };
 
 export const LandingPage: React.FC = () => {
@@ -92,14 +94,17 @@ export const LandingPage: React.FC = () => {
             <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }}>
               <div className="inline-flex items-center gap-2 bg-white/10 backdrop-blur-sm border border-white/20 rounded-full px-4 py-1.5 mb-6">
                 <span className="w-2 h-2 bg-formalio-400 rounded-full animate-pulse" />
-                <span className="text-sm text-white/90 font-medium">Déjà 6,200+ entreprises inscrites</span>
+                <span className="text-sm text-white/90 font-medium">Déjà 6 200+ entreprises inscrites au Cameroun</span>
+              </div>
+              <div className="inline-block bg-white/10 backdrop-blur-sm border border-white/20 rounded-lg px-3 py-1 mb-4">
+                <span className="text-xs font-semibold text-formalio-300 uppercase tracking-wider">Business Operating System · Afrique Francophone</span>
               </div>
               <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-white leading-tight mb-6">
                 Votre entreprise,<br />
                 <span className="text-formalio-300">enfin visible.</span>
               </h1>
               <p className="text-lg text-white/80 mb-8 max-w-lg">
-                Le système d'exploitation pour les PME informelles au Cameroun et en Afrique francophone. Comptabilité, conformité fiscale, et accès au crédit — simplifiés.
+                Le système d'exploitation pour les 3 millions de PME informelles au Cameroun et en Afrique francophone. Comptabilité SYSCOHADA, conformité DGI, et accès au crédit bancaire — en une seule application.
               </p>
               <div className="flex flex-col sm:flex-row gap-4 mb-8">
                 <button className="inline-flex items-center justify-center gap-2 bg-white text-formalio-900 px-6 py-3.5 rounded-2xl font-semibold hover:bg-surface-100 transition-colors">
@@ -158,9 +163,9 @@ export const LandingPage: React.FC = () => {
       <section className="py-12 bg-surface-50 border-y border-surface-200">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <p className="text-center text-sm font-medium text-surface-400 mb-8 uppercase tracking-wider">En partenariat avec</p>
-          <div className="flex flex-wrap justify-center items-center gap-8 md:gap-16 opacity-50">
-            {['MTN MoMo', 'Orange Money', 'Afreximbank', 'BOA', 'Ecobank', 'SGBC'].map((partner) => (
-              <span key={partner} className="text-lg font-bold text-surface-600">{partner}</span>
+          <div className="flex flex-wrap justify-center items-center gap-8 md:gap-14 opacity-60">
+            {['MTN MoMo', 'Orange Money', 'Afriland First Bank', 'Ecobank', 'NotchPay', 'BOA'].map((partner) => (
+              <span key={partner} className="text-base font-bold text-surface-600">{partner}</span>
             ))}
           </div>
         </div>
@@ -205,7 +210,7 @@ export const LandingPage: React.FC = () => {
               <div className="space-y-6">
                 {[
                   { icon: <Smartphone className="w-5 h-5" />, title: 'Sync Mobile Money', desc: 'Connectez MTN MoMo et Orange Money. Les transactions s\'importent automatiquement.' },
-                  { icon: <MessageCircle className="w-5 h-5" />, title: 'Saisie Vocale', desc: 'Dites "J\'ai vendu 50,000 FCFA de tissus" et Mosika enregistre tout.' },
+                  { icon: <MessageCircle className="w-5 h-5" />, title: 'Saisie Vocale ou WhatsApp', desc: 'Dites "J\'ai vendu 50 000 FCFA de tissus" ou envoyez un message WhatsApp — Mosika enregistre tout.' },
                   { icon: <BarChart3 className="w-5 h-5" />, title: 'Insights en Temps Réel', desc: 'Visualisez votre trésorerie, vos tendances et vos opportunités.' },
                   { icon: <Receipt className="w-5 h-5" />, title: 'Rapports OHADA', desc: 'Générez des rapports conformes au SYSCOHADA en quelques secondes.' },
                 ].map((item, i) => (
@@ -237,7 +242,7 @@ export const LandingPage: React.FC = () => {
                     </div>
                     <div className="bg-formalio-800 rounded-2xl p-4 text-white mb-4">
                       <p className="text-xs text-white/70 mb-1">Solde Total</p>
-                      <p className="text-2xl font-bold">1,245,000 FCFA</p>
+                      <p className="text-xl font-bold">1 245 000 FCFA</p>
                       <div className="flex items-center gap-1 mt-2">
                         <TrendingUp className="w-3 h-3 text-formalio-300" />
                         <span className="text-xs text-formalio-300">+12.5% ce mois</span>
@@ -264,13 +269,100 @@ export const LandingPage: React.FC = () => {
                             <p className="text-xs text-surface-400">{t.date}</p>
                           </div>
                           <span className={`text-sm font-semibold ${t.type === 'income' ? 'text-formalio-600' : 'text-danger-500'}`}>
-                            {t.type === 'income' ? '+' : '-'}{t.amount.toLocaleString()}
+                            {t.type === 'income' ? '+' : '-'}{t.amount.toLocaleString('fr-FR')} FCFA
                           </span>
                         </div>
                       ))}
                     </div>
                   </div>
                 </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* WhatsApp Bot Section */}
+      <section className="py-20 bg-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid lg:grid-cols-2 gap-16 items-center">
+            <div className="flex justify-center lg:order-2">
+              <div className="relative max-w-sm w-full">
+                <div className="bg-[#075E54] rounded-3xl p-6 shadow-elevated">
+                  <div className="flex items-center gap-3 mb-6 pb-4 border-b border-white/20">
+                    <div className="w-10 h-10 bg-white rounded-full flex items-center justify-center">
+                      <MessageCircle className="w-5 h-5 text-[#075E54]" />
+                    </div>
+                    <div>
+                      <p className="font-semibold text-white text-sm">Mosika · Bot Formalio</p>
+                      <p className="text-xs text-white/60">En ligne</p>
+                    </div>
+                  </div>
+                  <div className="space-y-3">
+                    <div className="bg-white/10 rounded-2xl rounded-tl-none px-4 py-3 max-w-[80%]">
+                      <p className="text-white text-sm">Vendu 45 000 FCFA de tissus à Mme Bello</p>
+                      <p className="text-white/40 text-[10px] text-right mt-1">09:14</p>
+                    </div>
+                    <div className="bg-[#DCF8C6] rounded-2xl rounded-tr-none px-4 py-3 max-w-[80%] ml-auto">
+                      <p className="text-[#075E54] text-sm font-medium">✅ Enregistré !</p>
+                      <p className="text-[#075E54]/70 text-xs mt-1">Revenu · Commerce · 45 000 FCFA</p>
+                      <p className="text-[#075E54]/70 text-xs">Score Mosika : +2 pts</p>
+                      <p className="text-[#075E54]/40 text-[10px] text-right mt-1">09:14 ✓✓</p>
+                    </div>
+                    <div className="bg-white/10 rounded-2xl rounded-tl-none px-4 py-3 max-w-[80%]">
+                      <p className="text-white text-sm">Payé loyer 75 000 espèces</p>
+                      <p className="text-white/40 text-[10px] text-right mt-1">14:32</p>
+                    </div>
+                    <div className="bg-[#DCF8C6] rounded-2xl rounded-tr-none px-4 py-3 max-w-[80%] ml-auto">
+                      <p className="text-[#075E54] text-sm font-medium">✅ Dépense enregistrée</p>
+                      <p className="text-[#075E54]/70 text-xs mt-1">Loyer · 75 000 FCFA · Espèces</p>
+                      <p className="text-[#075E54]/40 text-[10px] text-right mt-1">14:32 ✓✓</p>
+                    </div>
+                    <div className="bg-white/10 rounded-2xl rounded-tl-none px-4 py-3 max-w-[80%]">
+                      <p className="text-white text-sm">solde ?</p>
+                      <p className="text-white/40 text-[10px] text-right mt-1">16:05</p>
+                    </div>
+                    <div className="bg-[#DCF8C6] rounded-2xl rounded-tr-none px-4 py-3 max-w-[80%] ml-auto">
+                      <p className="text-[#075E54] text-sm font-medium">💰 Solde aujourd'hui</p>
+                      <p className="text-[#075E54]/80 text-xs mt-1">Revenus : 845 000 FCFA</p>
+                      <p className="text-[#075E54]/80 text-xs">Dépenses : 320 000 FCFA</p>
+                      <p className="text-[#075E54] text-sm font-bold mt-1">Net : 525 000 FCFA</p>
+                      <p className="text-[#075E54]/40 text-[10px] text-right mt-1">16:05 ✓✓</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div className="lg:order-1">
+              <span className="text-formalio-600 font-semibold text-sm uppercase tracking-wider">Bot WhatsApp</span>
+              <h2 className="text-3xl sm:text-4xl font-bold text-surface-900 mt-3 mb-6">
+                Gérez votre business <br />depuis WhatsApp
+              </h2>
+              <p className="text-surface-500 text-lg mb-8">
+                Pas le temps d'ouvrir une application ? Envoyez simplement un message à Mosika sur WhatsApp. Il enregistre, classifie et résume vos transactions automatiquement.
+              </p>
+              <div className="space-y-5">
+                {[
+                  { title: 'Saisie en langage naturel', desc: 'Écrivez comme vous parlez — en français, en anglais, ou en Pidgin. Mosika comprend le contexte camerounais.' },
+                  { title: 'Classification IA instantanée', desc: 'Chaque message est analysé et classifié dans la bonne catégorie SYSCOHADA en moins de 2 secondes.' },
+                  { title: 'Synchronisé avec votre app', desc: 'Toutes les transactions WhatsApp apparaissent immédiatement dans votre tableau de bord Formalio.' },
+                  { title: 'Disponible 24h/24, hors ligne', desc: 'WhatsApp fonctionne même avec une connexion 2G. Formalio synchro dès que vous retrouvez du réseau.' },
+                ].map((item, i) => (
+                  <motion.div key={item.title} initial={{ opacity: 0, x: -20 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.1 }}
+                    className="flex gap-4 items-start">
+                    <div className="w-8 h-8 bg-[#25D366]/10 rounded-xl flex items-center justify-center shrink-0 mt-0.5">
+                      <Check className="w-4 h-4 text-[#25D366]" />
+                    </div>
+                    <div>
+                      <h4 className="font-semibold text-surface-900 mb-0.5">{item.title}</h4>
+                      <p className="text-sm text-surface-500">{item.desc}</p>
+                    </div>
+                  </motion.div>
+                ))}
+              </div>
+              <div className="mt-8 inline-flex items-center gap-3 bg-[#25D366] text-white px-6 py-3 rounded-2xl font-semibold cursor-pointer hover:bg-[#128C7E] transition-colors">
+                <MessageCircle className="w-5 h-5" />
+                Essayer le Bot WhatsApp
               </div>
             </div>
           </div>
@@ -297,7 +389,7 @@ export const LandingPage: React.FC = () => {
                     'Basé sur vos transactions réelles',
                     'Mis à jour en temps réel',
                     'Reconnu par nos partenaires bancaires',
-                    'Completement gratuit'
+                    'Complètement gratuit'
                   ].map((item) => (
                     <div key={item} className="flex items-center gap-3">
                       <div className="w-6 h-6 bg-white/20 rounded-full flex items-center justify-center">
@@ -338,6 +430,58 @@ export const LandingPage: React.FC = () => {
                   </div>
                 </div>
               </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Accountant Marketplace Section */}
+      <section className="py-20 bg-surface-50">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center max-w-2xl mx-auto mb-16">
+            <span className="text-formalio-600 font-semibold text-sm uppercase tracking-wider">Marketplace Comptables</span>
+            <h2 className="text-3xl sm:text-4xl font-bold text-surface-900 mt-3 mb-4">
+              Trouvez votre expert-comptable ONECCA
+            </h2>
+            <p className="text-surface-500 text-lg">
+              Connecté directement à votre Formalio — votre comptable accède à vos données en temps réel. Zéro ressaisie, zéro erreur.
+            </p>
+          </div>
+          <div className="grid md:grid-cols-3 gap-6 mb-12">
+            {[
+              { name: 'Cabinet Nkono & Associés', specialty: 'PME Commerce & Distribution', clients: 48, rating: 4.9, location: 'Douala, Akwa', price: '35 000 FCFA/mois', badge: 'Top Rated' },
+              { name: 'Expert Fouda CPA', specialty: 'OHADA, Fiscalité DGI, Start-up', clients: 32, rating: 4.8, location: 'Yaoundé, Centre', price: '28 000 FCFA/mois', badge: 'Vérifié ONECCA' },
+              { name: 'Cabinet Eteme & Partners', specialty: 'Transport, Agriculture, Export', clients: 61, rating: 4.7, location: 'Bafoussam, Ouest', price: '22 000 FCFA/mois', badge: 'Disponible' },
+            ].map((accountant, i) => (
+              <motion.div key={accountant.name} initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.1 }}
+                className="bg-white border border-surface-200 rounded-2xl p-6 hover:shadow-card-hover hover:border-formalio-200 transition-all">
+                <div className="flex items-start justify-between mb-4">
+                  <div className="w-12 h-12 bg-formalio-100 rounded-xl flex items-center justify-center text-formalio-700 font-bold text-lg">
+                    {accountant.name.split(' ')[1][0]}
+                  </div>
+                  <span className="text-xs bg-formalio-50 text-formalio-700 px-2.5 py-1 rounded-full font-medium">{accountant.badge}</span>
+                </div>
+                <h3 className="font-semibold text-surface-900 mb-1">{accountant.name}</h3>
+                <p className="text-xs text-surface-500 mb-3">{accountant.specialty}</p>
+                <div className="flex items-center gap-1 mb-2">
+                  {[1,2,3,4,5].map(s => <Star key={s} className={`w-3 h-3 ${s <= Math.floor(accountant.rating) ? 'fill-gold-400 text-gold-400' : 'text-surface-200'}`} />)}
+                  <span className="text-xs text-surface-500 ml-1">{accountant.rating} · {accountant.clients} clients</span>
+                </div>
+                <p className="text-xs text-surface-400 mb-4">📍 {accountant.location}</p>
+                <div className="flex items-center justify-between pt-4 border-t border-surface-100">
+                  <span className="text-sm font-bold text-surface-900">{accountant.price}</span>
+                  <button className="text-xs bg-formalio-700 text-white px-3 py-1.5 rounded-lg font-medium hover:bg-formalio-800 transition-colors">
+                    Contacter
+                  </button>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+          <div className="text-center">
+            <div className="inline-flex items-center gap-3 bg-white border border-surface-200 rounded-2xl px-6 py-4">
+              <Users className="w-5 h-5 text-formalio-600" />
+              <span className="text-surface-700 font-medium">140+ experts-comptables agréés ONECCA disponibles sur Formalio</span>
+              <ArrowRight className="w-4 h-4 text-formalio-600" />
             </div>
           </div>
         </div>

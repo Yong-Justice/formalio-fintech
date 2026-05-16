@@ -90,32 +90,88 @@ export const accountantClients = [
 ];
 
 export const testimonials = [
-  { name: 'Marie Nkono', role: 'Propriétaire, Boutique Élégance', text: 'Formalio a transformé ma boutique. Avant, je ne savais pas combien je gagnais vraiment. Maintenant, j\'ai des rapports clairs et j\'ai obtenu mon premier prêt bancaire.', location: 'Douala, Cameroun' },
-  { name: 'Jean-Pierre Eteme', role: 'Opérateur, Transport Express', text: 'Le sync avec MTN MoMo est magique. Je n\'ai plus besoin d\'écrire chaque transaction. Mon Score Mosika est passé de 580 à 720 en 4 mois.', location: 'Yaoundé, Cameroun' },
-  { name: 'Aminata Fouda', role: 'Gérante, Restaurant Bon Goût', text: 'Je ne comprends pas grand-chose à la comptabilité, mais Mosika m\'explique tout simplement. Même ma comptable est impressionnée par mes rapports.', location: 'Bafoussam, Cameroun' },
+  { name: 'Marie Nkono', role: 'Propriétaire, Boutique Élégance', text: 'Formalio a transformé ma boutique. Avant, je ne savais pas combien je gagnais vraiment. Maintenant, j\'ai des rapports clairs et j\'ai obtenu mon premier prêt bancaire grâce à mon Score Mosika.', location: 'Douala, Cameroun' },
+  { name: 'Jean-Pierre Eteme', role: 'Opérateur, Transport Express', text: 'Le sync avec MTN MoMo est magique. Je n\'ai plus besoin d\'écrire chaque transaction. Mon Score Mosika est passé de 580 à 720 en 4 mois. La banque m\'a même appelé en premier.', location: 'Yaoundé, Cameroun' },
+  { name: 'Aminata Fouda', role: 'Gérante, Restaurant Bon Goût', text: 'Je ne comprends pas grand-chose à la comptabilité, mais Mosika m\'explique tout simplement. Même ma comptable agréée ONECCA est impressionnée par mes rapports SYSCOHADA.', location: 'Bafoussam, Cameroun' },
+  { name: 'Philippe Nkemelu', role: 'Artisan, Menuiserie Moderne', text: 'J\'enregistre mes ventes par WhatsApp ! C\'est incroyable. Je tape juste "vendu 45 000" et Formalio classe tout. Mon comptable reçoit mes rapports directement. Trop fort.', location: 'Limbé, Cameroun' },
 ];
 
 export const faqs = [
-  { q: 'Qu\'est-ce que Formalio ?', a: 'Formalio est un système d\'exploitation pour entreprises qui aide les PME informelles en Afrique francophone à devenir financièrement visibles, conformes fiscalement et éligibles au crédit.' },
-  { q: 'Comment fonctionne le Score Mosika ?', a: 'Le Score Mosika analyse vos transactions, votre historique de paiements, votre conformité fiscale et votre stabilité commerciale pour générer un score de crédit de 300 à 850.' },
-  { q: 'Puis-je utiliser Formalio sans connexion internet ?', a: 'Oui ! Formalio est conçu pour fonctionner hors ligne. Vos données sont synchronisées automatiquement dès que vous retrouvez une connexion.' },
-  { q: 'Mes données sont-elles sécurisées ?', a: 'Absolument. Nous utilisons un chiffrement de niveau bancaire (AES-256) et vos données ne sont jamais partagées sans votre consentement explicite.' },
-  { q: 'Quels opérateurs Mobile Money sont supportés ?', a: 'Nous supportons MTN MoMo, Orange Money, et Wave dans tous les pays de la CEMAC et bientôt en Côte d\'Ivoire et au Sénégal.' },
+  { q: 'Qu\'est-ce que Formalio ?', a: 'Formalio est le Système d\'Exploitation pour entreprises (Business Operating System) qui aide les PME informelles en Afrique francophone à devenir financièrement visibles, conformes fiscalement et éligibles au crédit. Fondé au Cameroun, Formalio est conçu pour les 3 millions d\'entreprises invisibles de l\'économie informelle.' },
+  { q: 'Comment fonctionne le Score Mosika ?', a: 'Le Score Mosika analyse vos transactions réelles, votre historique de paiements, votre conformité fiscale et la stabilité de vos revenus pour générer un score de crédit de 300 à 850. Plus vous utilisez Formalio régulièrement, plus votre score augmente — et plus vous devenez éligible aux prêts de nos partenaires bancaires.' },
+  { q: 'Puis-je utiliser Formalio sans connexion internet ?', a: 'Oui ! Formalio est conçu pour fonctionner hors ligne, même dans les zones rurales à faible connectivité. Vos données sont enregistrées localement et synchronisées automatiquement dès que vous retrouvez une connexion.' },
+  { q: 'Mes données sont-elles sécurisées ?', a: 'Absolument. Nous utilisons un chiffrement de niveau bancaire AES-256. Vos données financières ne sont jamais partagées avec des tiers sans votre consentement explicite, conformément à la loi camerounaise 2010/012 sur la protection des données personnelles.' },
+  { q: 'Quels opérateurs Mobile Money sont supportés ?', a: 'Nous supportons MTN MoMo, Orange Money, et Wave dans tous les pays de la CEMAC. Les transactions s\'importent automatiquement — plus besoin de saisie manuelle. La synchronisation directe NotchPay est en cours de déploiement.' },
+  { q: 'Comment fonctionne le Bot WhatsApp ?', a: 'Envoyez simplement un message à notre bot WhatsApp officiel : "Vendu 45 000 FCFA de tissus" ou "Payé loyer 75 000". L\'IA classifie et enregistre la transaction automatiquement dans votre compte Formalio. C\'est le moyen le plus rapide pour les commerçants qui préfèrent WhatsApp à une application.' },
+  { q: 'Qu\'est-ce que la Marketplace des Comptables ?', a: 'Formalio connecte les PME aux experts-comptables agréés ONECCA de Cameroun. Trouvez un comptable certifié selon votre secteur, votre budget et votre localisation. Vos données Formalio lui sont partagées automatiquement, avec votre accord — zéro ressaisie manuelle.' },
+  { q: 'Les rapports sont-ils conformes au SYSCOHADA ?', a: 'Oui. Formalio génère des états financiers conformes au SYSCOHADA 2016 : Bilan, Compte de Résultat, et Tableau des Flux de Trésorerie. Les rapports portent la mention légale requise et sont prêts pour présentation aux banques, aux autorités fiscales (DGI), et aux auditeurs.' },
 ];
 
 export const features = [
-  { icon: 'BookOpen', title: 'Comptabilité Simplifiée', desc: 'Suivez vos revenus et dépenses sans connaissance comptable. Mosika guide chaque étape.' },
-  { icon: 'FileText', title: 'Rapports OHADA', desc: 'Générez des rapports financiers conformes au SYSCOHADA en un clic. Prêts pour l\'audit.' },
-  { icon: 'ShieldCheck', title: 'Conformité Fiscale', desc: 'Restez à jour avec vos obligations fiscales. Rappels automatiques et calculs de TVA.' },
-  { icon: 'Smartphone', title: 'Sync Mobile Money', desc: 'Connectez MTN MoMo et Orange Money. Les transactions s\'importent automatiquement.' },
-  { icon: 'TrendingUp', title: 'Score de Crédit', desc: 'Construisez votre Score Mosika et devenz éligible pour des prêts auprès de nos partenaires.' },
-  { icon: 'Zap', title: 'Insights IA', desc: 'Recevez des conseils personnalisés pour améliorer votre trésorerie et réduire vos coûts.' },
+  { icon: 'BookOpen', title: 'Comptabilité Simplifiée', desc: 'Suivez vos revenus et dépenses sans formation comptable. Mosika vous guide à chaque étape, en français ou en anglais.' },
+  { icon: 'FileText', title: 'Rapports SYSCOHADA', desc: 'Générez des états financiers conformes au SYSCOHADA 2016 en un clic : Bilan, Compte de Résultat, Tableau des Flux.' },
+  { icon: 'ShieldCheck', title: 'Centre Fiscal', desc: 'Restez à jour avec vos obligations DGI. Calcul automatique de la TVA (19,25%), rappels d\'échéances, pré-remplissage des formulaires fiscaux.' },
+  { icon: 'Smartphone', title: 'Sync Mobile Money', desc: 'Connectez MTN MoMo et Orange Money. Les transactions s\'importent automatiquement via NotchPay — zéro saisie manuelle.' },
+  { icon: 'TrendingUp', title: 'Score Mosika', desc: 'Construisez votre Score Mosika et devenez éligible pour des prêts auprès de nos partenaires bancaires (Afriland, BOA, Ecobank).' },
+  { icon: 'Zap', title: 'Insights IA', desc: 'Recevez des conseils personnalisés de Mosika pour optimiser votre trésorerie, anticiper les risques et saisir les opportunités.' },
+  { icon: 'MessageCircle', title: 'Bot WhatsApp', desc: 'Enregistrez vos transactions par WhatsApp sans ouvrir l\'app. "Vendu 45 000 FCFA de tissus" — Mosika classe et enregistre tout.' },
+  { icon: 'Users', title: 'Marketplace Comptables', desc: 'Trouvez un expert-comptable agréé ONECCA. Partagez vos données Formalio en un clic. Certification et conformité garanties.' },
 ];
 
 export const pricingPlans = [
-  { name: 'Débutant', price: '0', period: '/mois', description: 'Pour les petites entreprises qui démarrent', features: ['100 transactions/mois', 'Rapports basiques', 'Score Mosika', 'Support communautaire'], cta: 'Commencer Gratuitement', popular: false },
-  { name: 'Croissance', price: '4,900', period: 'FCFA/mois', description: 'Pour les entreprises en expansion', features: ['Transactions illimitées', 'Rapports OHADA complets', 'Sync Mobile Money', 'Insights IA', 'Support prioritaire'], cta: 'Essai Gratuit 14j', popular: true },
-  { name: 'Pro', price: '12,900', period: 'FCFA/mois', description: 'Pour les entreprises établies', features: ['Tout dans Croissance', 'Multi-utilisateurs', 'API access', 'Comptable dédié', 'Analyses avancées'], cta: 'Contacter les Ventes', popular: false },
+  {
+    name: 'Gratuit',
+    price: '0',
+    period: ' FCFA/mois',
+    description: 'Pour les entrepreneurs qui démarrent leur formalisation',
+    features: [
+      '50 transactions/mois',
+      'Score Mosika basique',
+      'Rapport mensuel PDF',
+      'Bot WhatsApp inclus',
+      'Support communautaire',
+      '1 entreprise',
+    ],
+    cta: 'Commencer Gratuitement',
+    popular: false,
+  },
+  {
+    name: 'Pro',
+    price: '8 000',
+    period: ' FCFA/mois',
+    description: 'Pour les PME qui veulent accéder au crédit et à la conformité',
+    features: [
+      'Transactions illimitées',
+      'Score Mosika complet + historique',
+      'Rapports SYSCOHADA complets',
+      'Sync Mobile Money automatique',
+      'Insights IA personnalisés',
+      'Centre Fiscal + rappels DGI',
+      'Accès Marketplace Comptables',
+      'Support prioritaire',
+      '2 entreprises',
+    ],
+    cta: 'Essai Gratuit 14 jours',
+    popular: true,
+  },
+  {
+    name: 'Premium',
+    price: '15 000',
+    period: ' FCFA/mois',
+    description: 'Pour les entreprises établies et les cabinets comptables',
+    features: [
+      'Tout dans Pro',
+      'Multi-utilisateurs (5 accès)',
+      'API B2B partenaires bancaires',
+      'Comptable dédié ONECCA',
+      'Dossier bancaire automatique',
+      'Analyses avancées + export',
+      'Marque blanche disponible',
+      '5+ entreprises',
+    ],
+    cta: 'Contacter les Ventes',
+    popular: false,
+  },
 ];
 
 export const notifications = [
@@ -126,7 +182,7 @@ export const notifications = [
 ];
 
 export const aiInsights = [
-  { id: 1, type: 'tip', title: 'Optimisation des stocks', message: 'Vos achats de stock ont augmenté de 23% ce mois. Envisagez de négocier des remises avec votre fournisseur principal.', impact: 'Économie potentielle: 45,000 FCFA/mois' },
-  { id: 2, type: 'alert', title: 'Trésorerie', message: 'Votre trésorerie est basse pour la fin du mois. 3 factures clients sont en retard de paiement.', impact: 'Risque: Pénurie de liquidités' },
-  { id: 3, type: 'opportunity', title: 'Prêt éligible', message: 'Avec votre Score Mosika actuel de 760, vous êtes éligible pour un prêt de 2,000,000 FCFA à 8% d\'intérêt.', impact: 'Opportunité: Expansion possible' },
+  { id: 1, type: 'tip', title: 'Optimisation des stocks', message: 'Vos achats de stock ont augmenté de 23% ce mois. Envisagez de négocier des remises avec votre fournisseur principal.', impact: 'Économie potentielle : 45 000 FCFA/mois' },
+  { id: 2, type: 'alert', title: 'Trésorerie', message: 'Votre trésorerie est basse pour la fin du mois. 3 factures clients sont en retard de paiement.', impact: 'Risque : Pénurie de liquidités' },
+  { id: 3, type: 'opportunity', title: 'Prêt éligible', message: 'Avec votre Score Mosika actuel de 760, vous êtes éligible pour un prêt de 2 000 000 FCFA à 8% d\'intérêt annuel.', impact: 'Opportunité : Expansion possible' },
 ];
