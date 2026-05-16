@@ -1055,13 +1055,13 @@ export const MobileApp: React.FC = () => {
   );
 
   const TaxScreen = () => (
-    <ScreenWrapper title="Fiscalité">
+    <ScreenWrapper title="Centre Fiscal">
       <div className="bg-amber-50 border border-amber-200 rounded-2xl p-4 mb-4">
         <div className="flex items-start gap-3">
           <AlertTriangle className="w-6 h-6 text-amber-600 shrink-0" />
           <div>
-            <p className="text-sm font-semibold text-amber-800">Déclaration TVA due</p>
-            <p className="text-xs text-amber-700 mt-1">Date limite: 20 Janvier 2025 (dans 5 jours)</p>
+            <p className="text-sm font-semibold text-amber-800">TVA T4 2024 — Échéance dans 5 jours</p>
+            <p className="text-xs text-amber-700 mt-1">Montant estimé : <span className="font-bold">145 000 FCFA</span> (taux 19,25%)</p>
             <button
               onClick={() => navigate('reports')}
               className="mt-2 text-xs bg-amber-500 text-white px-3 py-1.5 rounded-lg font-medium active:scale-95 transition-transform"
@@ -1071,23 +1071,43 @@ export const MobileApp: React.FC = () => {
           </div>
         </div>
       </div>
+
+      <div className="grid grid-cols-2 gap-3 mb-4">
+        <div className="bg-white rounded-xl p-3 border border-surface-200">
+          <p className="text-xs text-surface-500">TVA collectée</p>
+          <p className="text-base font-bold text-surface-900 mt-1">754 300 FCFA</p>
+          <p className="text-[10px] text-surface-400">Taux 19,25%</p>
+        </div>
+        <div className="bg-amber-50 rounded-xl p-3 border border-amber-200">
+          <p className="text-xs text-amber-600">TVA nette due</p>
+          <p className="text-base font-bold text-amber-800 mt-1">145 000 FCFA</p>
+          <p className="text-[10px] text-amber-500">Avant 20 Janv.</p>
+        </div>
+      </div>
+
       <div className="bg-white rounded-2xl p-4 border border-surface-200">
-        <p className="text-sm font-semibold text-surface-900 mb-3">Calendrier Fiscal</p>
+        <p className="text-sm font-semibold text-surface-900 mb-3">Calendrier Fiscal DGI 2025</p>
         <div className="space-y-3">
           {[
-            { date: '20 Jan', label: 'Déclaration TVA T4', status: 'upcoming' },
-            { date: '15 Fév', label: 'Acompte IS', status: 'future' },
-            { date: '31 Mar', label: 'Bilan Annuel', status: 'future' },
+            { date: '20 Jan', label: 'Déclaration TVA T4 2024', status: 'urgent' },
+            { date: '15 Fév', label: 'Acompte IS (30%)', status: 'upcoming' },
+            { date: '28 Fév', label: 'PATENTE 2025', status: 'upcoming' },
+            { date: '31 Mar', label: 'Clôture exercice', status: 'future' },
+            { date: '30 Avr', label: 'DSF Annuelle', status: 'future' },
           ].map((item) => (
             <div key={item.label} className="flex items-center gap-3">
-              <div className="w-12 text-center">
+              <div className="w-12 text-center shrink-0">
                 <p className="text-xs font-bold text-surface-700">{item.date.split(' ')[0]}</p>
                 <p className="text-[10px] text-surface-400">{item.date.split(' ')[1]}</p>
               </div>
               <div className="flex-1">
                 <p className="text-sm text-surface-900">{item.label}</p>
               </div>
-              <div className={`w-2 h-2 rounded-full ${item.status === 'upcoming' ? 'bg-amber-500' : 'bg-surface-300'}`} />
+              <div className={`w-2 h-2 rounded-full shrink-0 ${
+                item.status === 'urgent' ? 'bg-danger-500' :
+                item.status === 'upcoming' ? 'bg-amber-500' :
+                'bg-surface-300'
+              }`} />
             </div>
           ))}
         </div>
@@ -1124,7 +1144,7 @@ export const MobileApp: React.FC = () => {
           {[
             { icon: Settings, label: 'Paramètres', action: () => navigate('settings') },
             { icon: Shield, label: 'Sécurité', action: () => navigate('security') },
-            { icon: CreditCard, label: 'Abonnement', badge: 'Croissance', action: () => navigate('subscription') },
+            { icon: CreditCard, label: 'Abonnement', badge: 'Pro', action: () => navigate('subscription') },
             { icon: Smartphone, label: 'Mobile Money', action: () => navigate('mobile-money') },
             { icon: Gift, label: 'Parrainage', badge: '+1K', action: () => navigate('referral') },
             { icon: HelpCircle, label: 'Aide & Support', action: () => navigate('help') },
@@ -1334,8 +1354,8 @@ export const MobileApp: React.FC = () => {
             <p className="text-xs text-surface-500">Actifs</p>
           </div>
           <div className="text-center">
-            <p className="text-xl font-bold text-gold-600">8K</p>
-            <p className="text-xs text-surface-500">Gagnés</p>
+            <p className="text-lg font-bold text-gold-600">8 000</p>
+            <p className="text-xs text-surface-500">FCFA gagnés</p>
           </div>
         </div>
       </div>

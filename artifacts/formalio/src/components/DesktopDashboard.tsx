@@ -3,7 +3,7 @@ import { motion } from 'framer-motion';
 import {
   LayoutDashboard, Wallet, FileText, TrendingUp, Users, Settings,
   Bell, Search, Download, ChevronDown, ArrowUpRight, ArrowDownRight,
-  Calendar, BarChart3, CreditCard,
+  Calendar, BarChart3, CreditCard, AlertTriangle, Shield,
   Eye, EyeOff
 } from 'lucide-react';
 import { Logo } from './Logo';
@@ -20,8 +20,9 @@ const sidebarItems = [
   { icon: LayoutDashboard, label: 'Tableau de Bord', id: 'dashboard' },
   { icon: Wallet, label: 'Transactions', id: 'transactions' },
   { icon: TrendingUp, label: 'Trésorerie', id: 'cashflow' },
-  { icon: FileText, label: 'Rapports', id: 'reports' },
+  { icon: FileText, label: 'Rapports OHADA', id: 'reports' },
   { icon: CreditCard, label: 'Score Mosika', id: 'credit' },
+  { icon: AlertTriangle, label: 'Centre Fiscal', id: 'tax' },
   { icon: Users, label: 'Clients', id: 'clients' },
   { icon: Settings, label: 'Paramètres', id: 'settings' },
 ];
@@ -163,7 +164,7 @@ export const DesktopDashboard: React.FC = () => {
                     </span>
                   </td>
                   <td className={`py-3 text-sm font-semibold text-right ${t.type === 'income' ? 'text-formalio-600' : 'text-danger-500'}`}>
-                    {t.type === 'income' ? '+' : '-'}{t.amount.toLocaleString()} FCFA
+                    {t.type === 'income' ? '+' : '-'}{t.amount.toLocaleString('fr-FR')} FCFA
                   </td>
                 </tr>
               ))}
@@ -241,12 +242,138 @@ export const DesktopDashboard: React.FC = () => {
     </div>
   );
 
+  const TaxView = () => (
+    <div className="space-y-6">
+      <div>
+        <p className="text-sm font-semibold text-formalio-700">Centre Fiscal</p>
+        <h1 className="mt-1 text-3xl font-bold text-surface-900">Fiscalité & DGI</h1>
+        <p className="mt-2 text-sm text-surface-500">TVA 19,25% · Impôt sur les Sociétés · PATENTE · Déclaration Statistique et Fiscale (DSF)</p>
+      </div>
+
+      <div className="bg-amber-50 border border-amber-200 rounded-2xl p-5 flex items-start gap-4">
+        <AlertTriangle className="w-6 h-6 text-amber-600 shrink-0 mt-0.5" />
+        <div>
+          <p className="font-semibold text-amber-800">Déclaration TVA T4 2024 — Échéance : 20 Janvier 2025</p>
+          <p className="text-sm text-amber-700 mt-1">Montant estimé : <span className="font-bold">145 000 FCFA</span> · Taux appliqué : 19,25%</p>
+          <button className="mt-3 px-4 py-2 bg-amber-600 text-white text-sm font-semibold rounded-xl hover:bg-amber-700 transition-colors">
+            Préparer la déclaration
+          </button>
+        </div>
+      </div>
+
+      <div className="grid lg:grid-cols-3 gap-4">
+        {[
+          { label: 'TVA collectée (T4)', value: '754 300 FCFA', sub: 'Taux 19,25%', positive: true },
+          { label: 'TVA déductible (T4)', value: '609 300 FCFA', sub: 'Achats pro TTC', positive: true },
+          { label: 'TVA nette à payer', value: '145 000 FCFA', sub: 'Dû avant 20 Jan', positive: false },
+        ].map((s) => (
+          <div key={s.label} className={`bg-white rounded-2xl p-5 border ${s.positive ? 'border-surface-200' : 'border-amber-200'}`}>
+            <p className="text-sm text-surface-500">{s.label}</p>
+            <p className={`text-xl font-bold mt-1 ${s.positive ? 'text-surface-900' : 'text-amber-700'}`}>{s.value}</p>
+            <p className="text-xs text-surface-400 mt-1">{s.sub}</p>
+          </div>
+        ))}
+      </div>
+
+      <div className="bg-white rounded-2xl p-6 border border-surface-200">
+        <h3 className="text-lg font-semibold text-surface-900 mb-4">Calendrier Fiscal 2025 — DGI Cameroun</h3>
+        <div className="space-y-3">
+          {[
+            { date: '20 Jan 2025', label: 'Déclaration TVA T4 2024', type: 'TVA 19,25%', status: 'urgent' },
+            { date: '15 Fév 2025', label: 'Acompte IS (Impôt sur les Sociétés)', type: 'IS 30%', status: 'upcoming' },
+            { date: '28 Fév 2025', label: 'Déclaration de la PATENTE 2025', type: 'PATENTE', status: 'upcoming' },
+            { date: '31 Mar 2025', label: 'Clôture exercice & Bilan provisoire', type: 'SYSCOHADA', status: 'future' },
+            { date: '30 Avr 2025', label: 'Dépôt DSF — Déclaration Statistique et Fiscale', type: 'DSF annuelle', status: 'future' },
+            { date: '20 Avr 2025', label: 'Déclaration TVA T1 2025', type: 'TVA 19,25%', status: 'future' },
+          ].map((item) => (
+            <div key={item.label} className={`flex items-center gap-4 p-4 rounded-xl ${item.status === 'urgent' ? 'bg-danger-50 border border-danger-200' : item.status === 'upcoming' ? 'bg-amber-50 border border-amber-100' : 'bg-surface-50 border border-surface-100'}`}>
+              <div className="text-center w-20 shrink-0">
+                <p className="text-xs font-bold text-surface-700">{item.date.split(' ').slice(0, 2).join(' ')}</p>
+                <p className="text-[10px] text-surface-400">{item.date.split(' ')[2]}</p>
+              </div>
+              <div className="flex-1">
+                <p className="text-sm font-semibold text-surface-900">{item.label}</p>
+                <p className="text-xs text-surface-500 mt-0.5">{item.type}</p>
+              </div>
+              <span className={`text-xs font-semibold px-2 py-1 rounded-full shrink-0 ${item.status === 'urgent' ? 'bg-danger-100 text-danger-700' : item.status === 'upcoming' ? 'bg-amber-100 text-amber-700' : 'bg-surface-100 text-surface-600'}`}>
+                {item.status === 'urgent' ? 'Urgent' : item.status === 'upcoming' ? 'Bientôt' : 'Planifié'}
+              </span>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <div className="bg-white rounded-2xl p-6 border border-surface-200">
+        <div className="flex items-center justify-between mb-4">
+          <h3 className="text-lg font-semibold text-surface-900">Rapports SYSCOHADA disponibles</h3>
+          <button className="flex items-center gap-2 text-sm text-formalio-700 font-semibold bg-formalio-50 px-3 py-1.5 rounded-lg hover:bg-formalio-100 transition-colors">
+            <Download className="w-4 h-4" /> Tout exporter
+          </button>
+        </div>
+        <div className="grid grid-cols-2 gap-3">
+          {[
+            { label: 'Bilan Comptable', sub: 'SYSCOHADA révisé 2017', ready: true },
+            { label: 'Compte de Résultat', sub: 'Janvier 2025', ready: true },
+            { label: 'Flux de Trésorerie', sub: 'Tableau des Flux', ready: true },
+            { label: 'Déclaration TVA', sub: 'T4 2024 — En attente', ready: false },
+          ].map((r) => (
+            <div key={r.label} className={`p-4 rounded-xl border flex items-center justify-between ${r.ready ? 'bg-formalio-50 border-formalio-200' : 'bg-amber-50 border-amber-200'}`}>
+              <div>
+                <p className="text-sm font-semibold text-surface-900">{r.label}</p>
+                <p className="text-xs text-surface-500 mt-0.5">{r.sub}</p>
+              </div>
+              <div className={`w-8 h-8 rounded-lg flex items-center justify-center ${r.ready ? 'bg-formalio-100 text-formalio-700' : 'bg-amber-100 text-amber-600'}`}>
+                {r.ready ? <Shield className="w-4 h-4" /> : <Calendar className="w-4 h-4" />}
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+
+  const ReportsView = () => (
+    <div className="space-y-6">
+      <div>
+        <p className="text-sm font-semibold text-formalio-700">Rapports Comptables</p>
+        <h1 className="mt-1 text-3xl font-bold text-surface-900">Rapports OHADA</h1>
+        <p className="mt-2 text-sm text-surface-500">États financiers conformes SYSCOHADA 2017 — Bilan, Compte de Résultat, Tableau des Flux, DSF</p>
+      </div>
+      <div className="grid grid-cols-3 gap-4">
+        {[
+          { label: 'Bilan Comptable', sub: 'Janvier 2025 · Prêt', icon: FileText, status: 'ready' },
+          { label: 'Compte de Résultat', sub: 'Janvier 2025 · Prêt', icon: TrendingUp, status: 'ready' },
+          { label: 'Flux de Trésorerie', sub: 'Janvier 2025 · Prêt', icon: BarChart3, status: 'ready' },
+          { label: 'Déclaration TVA', sub: 'T4 2024 · En attente', icon: AlertTriangle, status: 'pending' },
+          { label: 'DSF Annuelle', sub: 'Exercice 2024 · Prêt', icon: Shield, status: 'ready' },
+          { label: 'PATENTE 2025', sub: 'À déposer avant 28 Fév', icon: Calendar, status: 'pending' },
+        ].map((r) => (
+          <div key={r.label} className={`bg-white rounded-2xl p-5 border cursor-pointer hover:shadow-card transition-all ${r.status === 'pending' ? 'border-amber-200' : 'border-surface-200 hover:border-formalio-300'}`}>
+            <div className={`w-10 h-10 rounded-xl flex items-center justify-center mb-3 ${r.status === 'pending' ? 'bg-amber-50 text-amber-600' : 'bg-formalio-50 text-formalio-600'}`}>
+              <r.icon className="w-5 h-5" />
+            </div>
+            <p className="text-sm font-semibold text-surface-900">{r.label}</p>
+            <p className="text-xs text-surface-500 mt-1">{r.sub}</p>
+            <div className="mt-3 flex items-center justify-between">
+              <span className={`text-[10px] font-semibold px-2 py-1 rounded-full ${r.status === 'pending' ? 'bg-amber-100 text-amber-700' : 'bg-formalio-100 text-formalio-700'}`}>
+                {r.status === 'pending' ? 'En attente' : 'Prêt'}
+              </span>
+              {r.status === 'ready' && <Download className="w-4 h-4 text-surface-400 hover:text-formalio-600" />}
+            </div>
+          </div>
+        ))}
+      </div>
+      <CashflowView />
+    </div>
+  );
+
   const views: Record<string, React.ReactNode> = {
     dashboard: <DashboardView />,
     cashflow: <CashflowView />,
     credit: <CreditView />,
     transactions: <DashboardView />,
-    reports: <CashflowView />,
+    reports: <ReportsView />,
+    tax: <TaxView />,
     clients: <DashboardView />,
     settings: <CreditView />,
   };

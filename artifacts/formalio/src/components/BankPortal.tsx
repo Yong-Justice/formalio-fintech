@@ -76,10 +76,10 @@ const industryData = [
 ];
 
 const sidebarItems = [
-  { icon: Building2, label: 'SME Portfolio', id: 'portfolio' as BankView },
-  { icon: FileText, label: 'Loan Review', id: 'applications' as BankView },
-  { icon: Award, label: 'Credit Scoring', id: 'scoring' as BankView },
-  { icon: Landmark, label: 'Partners', id: 'partners' as BankView },
+  { icon: Building2, label: 'Portefeuille PME', id: 'portfolio' as BankView },
+  { icon: FileText, label: 'Analyse Crédit', id: 'applications' as BankView },
+  { icon: Award, label: 'Score Mosika', id: 'scoring' as BankView },
+  { icon: Landmark, label: 'Partenaires', id: 'partners' as BankView },
   { icon: BarChart3, label: 'Analytics', id: 'analytics' as BankView },
 ];
 
@@ -108,7 +108,7 @@ export const BankPortal: React.FC = () => {
       <aside className="fixed left-0 top-0 z-20 flex h-full w-72 flex-col border-r border-surface-200 bg-white">
         <div className="border-b border-surface-200 p-6">
           <Logo size={34} animated />
-          <p className="mt-2 text-xs font-semibold uppercase tracking-wider text-surface-400">Financial Institution Portal</p>
+          <p className="mt-2 text-xs font-semibold uppercase tracking-wider text-surface-400">Portail Institution Financière</p>
           <div className="mt-3 rounded-xl bg-formalio-50 p-3"><PulseDot tone="green" label="Partner API connected" /></div>
         </div>
         <nav className="flex-1 space-y-1 p-3">
@@ -140,7 +140,7 @@ export const BankPortal: React.FC = () => {
     </motion.div>
   );
 
-  const Header = () => <div className="flex items-start justify-between"><div><p className="text-sm font-semibold text-formalio-700">Formalio Credit Intelligence</p><h1 className="mt-1 text-3xl font-bold tracking-tight text-surface-900">Bank & MFI Portal</h1><p className="mt-2 max-w-3xl text-sm text-surface-500">AI-assisted lending intelligence for SME underwriting, OHADA-compliant financial report access, risk analytics, and regional portfolio growth.</p></div><div className="flex gap-2"><button onClick={() => showAction('Relationship manager assigned')} className="rounded-xl bg-white px-4 py-2 text-sm font-semibold text-surface-700 ring-1 ring-surface-200"><Handshake className="mr-2 inline h-4 w-4" />Assign RM</button><button onClick={() => showAction('Loan committee packet generated')} className="rounded-xl bg-formalio-700 px-4 py-2 text-sm font-semibold text-white"><FileText className="mr-2 inline h-4 w-4" />Committee Packet</button></div></div>;
+  const Header = () => <div className="flex items-start justify-between"><div><p className="text-sm font-semibold text-formalio-700">Formalio Credit Intelligence · COBAC · OHADA</p><h1 className="mt-1 text-3xl font-bold tracking-tight text-surface-900">Portail Banque & IMF</h1><p className="mt-2 max-w-3xl text-sm text-surface-500">Intelligence de crédit assistée par IA pour l'évaluation des PME — accès aux états financiers SYSCOHADA 2017, Score Mosika, analytics régionales et gestion de portefeuille conforme COBAC.</p></div><div className="flex gap-2"><button onClick={() => showAction('Relationship manager assigned')} className="rounded-xl bg-white px-4 py-2 text-sm font-semibold text-surface-700 ring-1 ring-surface-200"><Handshake className="mr-2 inline h-4 w-4" />Assign RM</button><button onClick={() => showAction('Loan committee packet generated')} className="rounded-xl bg-formalio-700 px-4 py-2 text-sm font-semibold text-white"><FileText className="mr-2 inline h-4 w-4" />Committee Packet</button></div></div>;
 
   const PortfolioPage = () => (
     <div className="space-y-6"><Header />

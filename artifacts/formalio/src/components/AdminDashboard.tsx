@@ -19,7 +19,7 @@ type AdminView = 'overview' | 'users' | 'support' | 'system' | 'fraud';
 type UserStatus = 'active' | 'inactive' | 'suspended' | 'restricted';
 type RiskLevel = 'low' | 'medium' | 'high' | 'critical';
 type KycStatus = 'verified' | 'pending' | 'rejected' | 'manual_review';
-type Plan = 'Free' | 'Growth' | 'Pro' | 'Lifetime';
+type Plan = 'Gratuit' | 'Pro' | 'Premium' | 'Lifetime';
 
 interface AdminUser {
   id: string;
@@ -64,22 +64,22 @@ interface Ticket {
 
 const users: AdminUser[] = [
   {
-    id: 'USR-1001', owner: 'Marie Nkono', business: 'Boutique Elegance', phone: '+237 699 224 110', email: 'marie@elegance.cm', country: 'Cameroon', city: 'Douala', plan: 'Growth', registered: '2025-01-04', lastLogin: '2 min ago', device: 'Tecno Spark 10 - Android 13', kyc: 'verified', status: 'active', score: 760, momo: 'connected', reports: 18, volume: 12450000, risk: 'low', supportTickets: 2, agent: 'Amina', notes: 'High value merchant, eligible for pilot loan.', auditLogs: ['KYC verified by Amina', 'MTN MoMo connected', 'PDF report exported'],
+    id: 'USR-1001', owner: 'Marie Nkono', business: 'Boutique Elegance', phone: '+237 699 224 110', email: 'marie@elegance.cm', country: 'Cameroon', city: 'Douala', plan: 'Pro', registered: '2025-01-04', lastLogin: '2 min ago', device: 'Tecno Spark 10 - Android 13', kyc: 'verified', status: 'active', score: 760, momo: 'connected', reports: 18, volume: 12450000, risk: 'low', supportTickets: 2, agent: 'Amina', notes: 'High value merchant, eligible for pilot loan.', auditLogs: ['KYC verified by Amina', 'MTN MoMo connected', 'PDF report exported'],
   },
   {
-    id: 'USR-1002', owner: 'Jean-Pierre Eteme', business: 'Transport Express', phone: '+237 677 102 441', email: 'jp@transport.cm', country: 'Cameroon', city: 'Yaounde', plan: 'Pro', registered: '2024-12-18', lastLogin: '8 min ago', device: 'Samsung A14 - Android 14', kyc: 'verified', status: 'active', score: 680, momo: 'connected', reports: 26, volume: 8900000, risk: 'medium', supportTickets: 5, agent: 'Claude', notes: 'Asked for fleet financing.', auditLogs: ['Plan upgraded to Pro', 'Orange Money sync failed', 'Support escalation closed'],
+    id: 'USR-1002', owner: 'Jean-Pierre Eteme', business: 'Transport Express', phone: '+237 677 102 441', email: 'jp@transport.cm', country: 'Cameroon', city: 'Yaounde', plan: 'Premium', registered: '2024-12-18', lastLogin: '8 min ago', device: 'Samsung A14 - Android 14', kyc: 'verified', status: 'active', score: 680, momo: 'connected', reports: 26, volume: 8900000, risk: 'medium', supportTickets: 5, agent: 'Claude', notes: 'Asked for fleet financing.', auditLogs: ['Plan upgradé en Premium', 'Orange Money sync failed', 'Support escalation closed'],
   },
   {
-    id: 'USR-1003', owner: 'Aminata Fouda', business: 'Restaurant Bon Gout', phone: '+237 655 904 222', email: 'amina@bongout.cm', country: 'Cameroon', city: 'Bafoussam', plan: 'Growth', registered: '2025-01-10', lastLogin: '31 min ago', device: 'Infinix Hot 30 - Android 13', kyc: 'pending', status: 'active', score: 720, momo: 'partial', reports: 11, volume: 6700000, risk: 'low', supportTickets: 1, agent: 'Nora', notes: 'Needs assistance completing tax calendar.', auditLogs: ['KYC document uploaded', 'TVA report previewed'],
+    id: 'USR-1003', owner: 'Aminata Fouda', business: 'Restaurant Bon Gout', phone: '+237 655 904 222', email: 'amina@bongout.cm', country: 'Cameroon', city: 'Bafoussam', plan: 'Pro', registered: '2025-01-10', lastLogin: '31 min ago', device: 'Infinix Hot 30 - Android 13', kyc: 'pending', status: 'active', score: 720, momo: 'partial', reports: 11, volume: 6700000, risk: 'low', supportTickets: 1, agent: 'Nora', notes: 'Needs assistance completing tax calendar.', auditLogs: ['KYC document uploaded', 'TVA report previewed'],
   },
   {
-    id: 'USR-1004', owner: 'Paul Ndongo', business: 'Agro Business SARL', phone: '+237 670 333 908', email: 'paul@agro.cm', country: 'Cameroon', city: 'Bertoua', plan: 'Free', registered: '2024-11-29', lastLogin: '2 hours ago', device: 'Itel S23 - Android 12', kyc: 'manual_review', status: 'restricted', score: 590, momo: 'disconnected', reports: 4, volume: 4500000, risk: 'high', supportTickets: 8, agent: 'Amina', notes: 'Velocity anomaly on expenses. Restrict loan visibility.', auditLogs: ['Fraud flag added', 'Account restricted', 'Admin note updated'],
+    id: 'USR-1004', owner: 'Paul Ndongo', business: 'Agro Business SARL', phone: '+237 670 333 908', email: 'paul@agro.cm', country: 'Cameroon', city: 'Bertoua', plan: 'Gratuit', registered: '2024-11-29', lastLogin: '2 hours ago', device: 'Itel S23 - Android 12', kyc: 'manual_review', status: 'restricted', score: 590, momo: 'disconnected', reports: 4, volume: 4500000, risk: 'high', supportTickets: 8, agent: 'Amina', notes: 'Velocity anomaly on expenses. Restrict loan visibility.', auditLogs: ['Fraud flag added', 'Account restricted', 'Admin note updated'],
   },
   {
     id: 'USR-1005', owner: 'Kofi Mensah', business: 'Tech Solutions CM', phone: '+237 681 420 800', email: 'kofi@techsolutions.cm', country: 'Cameroon', city: 'Douala', plan: 'Lifetime', registered: '2024-10-02', lastLogin: 'Now', device: 'iPhone 13 - iOS 17', kyc: 'verified', status: 'active', score: 810, momo: 'connected', reports: 42, volume: 15200000, risk: 'low', supportTickets: 0, agent: 'Yvan', notes: 'Lifetime access granted by growth campaign.', auditLogs: ['Lifetime access granted', 'API access enabled', 'KYC refreshed'],
   },
   {
-    id: 'USR-1006', owner: 'Clarisse Mballa', business: 'Marche Frais', phone: '+237 690 777 002', email: 'clarisse@marchefrais.cm', country: 'Cameroon', city: 'Garoua', plan: 'Growth', registered: '2025-01-14', lastLogin: '1 day ago', device: 'Tecno Pop 8 - Android 13', kyc: 'rejected', status: 'inactive', score: 540, momo: 'partial', reports: 2, volume: 2800000, risk: 'critical', supportTickets: 3, agent: 'Claude', notes: 'Rejected KYC due blurry ID. Needs call.', auditLogs: ['KYC rejected', 'Email sent', 'Refund request received'],
+    id: 'USR-1006', owner: 'Clarisse Mballa', business: 'Marche Frais', phone: '+237 690 777 002', email: 'clarisse@marchefrais.cm', country: 'Cameroon', city: 'Garoua', plan: 'Pro', registered: '2025-01-14', lastLogin: '1 day ago', device: 'Tecno Pop 8 - Android 13', kyc: 'rejected', status: 'inactive', score: 540, momo: 'partial', reports: 2, volume: 2800000, risk: 'critical', supportTickets: 3, agent: 'Claude', notes: 'Rejected KYC due blurry ID. Needs call.', auditLogs: ['KYC rejected', 'Email sent', 'Refund request received'],
   },
 ];
 
@@ -284,7 +284,7 @@ export const AdminDashboard: React.FC = () => {
               <Search className="h-4 w-4 text-surface-400" />
               <input value={query} onChange={(e) => setQuery(e.target.value)} placeholder="Search name, business, phone, city..." className="flex-1 bg-transparent text-sm outline-none" />
             </div>
-            <SelectFilter value={planFilter} onChange={setPlanFilter} options={['all', 'Free', 'Growth', 'Pro', 'Lifetime']} label="Plan" />
+            <SelectFilter value={planFilter} onChange={setPlanFilter} options={['all', 'Gratuit', 'Pro', 'Premium', 'Lifetime']} label="Plan" />
             <SelectFilter value={riskFilter} onChange={setRiskFilter} options={['all', 'low', 'medium', 'high', 'critical']} label="Risk" />
             <button onClick={() => setQuery('')} className="rounded-xl bg-surface-50 px-3 py-2 text-sm text-surface-600 ring-1 ring-surface-200"><Filter className="mr-1 inline h-4 w-4" />Reset</button>
           </div>
@@ -372,8 +372,8 @@ export const AdminDashboard: React.FC = () => {
   );
 
   const OverviewPage = () => (
-    <div className="space-y-6"><SectionTitle kicker="Command center" title="Formalio Operations" copy="A live management cockpit for users, revenue, fraud, support, infrastructure, and regional expansion." />
-      <div className="grid grid-cols-4 gap-4"><StatCard label="Users" value={6980} sub="+180 this week" icon={Users} /><StatCard label="MRR USD" value={18500} sub="+24.5% MoM" icon={Wallet} /><StatCard label="Open tickets" value={42} sub="8 high priority" icon={LifeBuoy} tone="amber" /><StatCard label="Risk alerts" value={7} sub="2 critical" icon={ShieldAlert} tone="red" /></div>
+    <div className="space-y-6"><SectionTitle kicker="Centre de commandement" title="Formalio Operations" copy="Tableau de bord de pilotage en temps réel — utilisateurs, revenus FCFA, fraude, support, infrastructure et expansion régionale." />
+      <div className="grid grid-cols-4 gap-4"><StatCard label="MAU actifs" value={6980} sub="+19.4% MoM · objectif 10K" icon={Users} /><StatCard label="MRR (FCFA)" value={11240000} sub="+24.5% MoM · NPS &gt;50" icon={Wallet} /><StatCard label="Tickets ouverts" value={42} sub="Churn &lt;5% · SLA 98%" icon={LifeBuoy} tone="amber" /><StatCard label="Alertes risque" value={7} sub="2 critiques · COBAC" icon={ShieldAlert} tone="red" /></div>
       <div className="grid grid-cols-[minmax(0,1fr)_380px] gap-6"><div className="rounded-2xl border border-surface-200 bg-white p-6"><h3 className="mb-4 text-lg font-bold">User growth and KYC</h3><div className="h-80"><ResponsiveContainer width="100%" height="100%"><AreaChart data={userGrowthData}><defs><linearGradient id="adminUsers" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stopColor="#0f4f4a" stopOpacity={0.25} /><stop offset="100%" stopColor="#0f4f4a" stopOpacity={0} /></linearGradient></defs><CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" /><XAxis dataKey="day" /><YAxis /><Tooltip /><Area type="monotone" dataKey="users" stroke="#0f4f4a" fill="url(#adminUsers)" strokeWidth={3} /><Area type="monotone" dataKey="active" stroke="#3b82f6" fill="transparent" strokeWidth={2} /></AreaChart></ResponsiveContainer></div></div><div className="rounded-2xl border border-surface-200 bg-white p-6"><h3 className="mb-4 text-lg font-bold">Live event stream</h3><DataStream /></div></div>
     </div>
   );
