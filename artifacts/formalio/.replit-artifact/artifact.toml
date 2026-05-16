@@ -1,0 +1,31 @@
+kind = "web"
+previewPath = "/"
+title = "Formalio"
+version = "1.0.0"
+id = "artifacts/formalio"
+router = "path"
+
+[[integratedSkills]]
+name = "react-vite"
+version = "1.0.0"
+
+[[services]]
+name = "web"
+paths = [ "/" ]
+localPort = 20324
+
+[services.development]
+run = "pnpm --filter @workspace/formalio run dev"
+
+[services.production]
+build = [ "pnpm", "--filter", "@workspace/formalio", "run", "build" ]
+publicDir = "artifacts/formalio/dist/public"
+serve = "static"
+
+[[services.production.rewrites]]
+from = "/*"
+to = "/index.html"
+
+[services.env]
+PORT = "20324"
+BASE_PATH = "/"
