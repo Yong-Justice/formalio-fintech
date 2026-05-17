@@ -9,7 +9,8 @@ import {
 import { Logo } from './Logo';
 import {
   transactions, monthlyData, categoryBreakdown, expenseBreakdown,
-  creditScoreHistory
+  creditScoreHistory, invoices, bilanData, compteResultatData,
+  journalEntries,
 } from '../data/demoData';
 import {
   AreaChart, Area, BarChart, Bar, PieChart, Pie, Cell, LineChart, Line,
@@ -367,15 +368,295 @@ export const DesktopDashboard: React.FC = () => {
     </div>
   );
 
+  const TransactionsView = () => (
+    <div className="space-y-6">
+      <div className="flex items-center justify-between">
+        <div>
+          <h1 className="text-2xl font-bold text-surface-900">Grand Livre & Transactions</h1>
+          <p className="text-sm text-surface-500 mt-1">Journal comptable SYSCOHADA · Plan Comptable OHADA 2017</p>
+        </div>
+        <div className="flex gap-3">
+          <button className="flex items-center gap-2 px-4 py-2 bg-white border border-surface-200 text-surface-700 rounded-xl text-sm font-medium hover:bg-surface-50">
+            <Download className="w-4 h-4" />Export Excel
+          </button>
+          <button className="flex items-center gap-2 px-4 py-2 bg-formalio-700 text-white rounded-xl text-sm font-medium hover:bg-formalio-800">
+            + Nouvelle écriture
+          </button>
+        </div>
+      </div>
+      <div className="grid grid-cols-4 gap-4">
+        {[
+          { label: 'Total recettes', value: '3 850 000', color: 'text-formalio-700', bg: 'bg-formalio-50 border-formalio-200' },
+          { label: 'Total charges', value: '1 670 000', color: 'text-danger-600', bg: 'bg-danger-50 border-danger-200' },
+          { label: 'Résultat net', value: '2 180 000', color: 'text-formalio-700', bg: 'bg-white border-surface-200' },
+          { label: 'TVA collectée', value: '741 163', color: 'text-amber-700', bg: 'bg-amber-50 border-amber-200' },
+        ].map(s => (
+          <div key={s.label} className={`rounded-2xl border p-5 ${s.bg}`}>
+            <p className="text-xs text-surface-500 font-medium">{s.label}</p>
+            <p className={`text-xl font-bold mt-2 ${s.color}`}>{s.value} FCFA</p>
+          </div>
+        ))}
+      </div>
+      <div className="bg-white rounded-2xl border border-surface-200 shadow-sm">
+        <div className="flex items-center justify-between border-b border-surface-200 px-6 py-4">
+          <h3 className="font-semibold text-surface-900">Journal des écritures — SYSCOHADA</h3>
+          <div className="flex items-center gap-2 bg-surface-50 rounded-xl px-3 py-2">
+            <Search className="w-4 h-4 text-surface-400" />
+            <input type="text" placeholder="Rechercher..." className="bg-transparent outline-none text-sm" />
+          </div>
+        </div>
+        <div className="overflow-x-auto">
+          <table className="w-full">
+            <thead className="bg-surface-50/80">
+              <tr className="border-b border-surface-200 text-left text-[11px] font-semibold uppercase tracking-wider text-surface-400">
+                <th className="px-4 py-3">Date</th>
+                <th className="px-4 py-3">Réf.</th>
+                <th className="px-4 py-3">Libellé</th>
+                <th className="px-4 py-3">Compte SYSCOHADA</th>
+                <th className="px-4 py-3">Débit</th>
+                <th className="px-4 py-3">Crédit</th>
+                <th className="px-4 py-3">Solde</th>
+                <th className="px-4 py-3">Type</th>
+              </tr>
+            </thead>
+            <tbody>
+              {transactions.map((tx, i) => (
+                <tr key={tx.id} className={`border-b border-surface-100 text-sm hover:bg-formalio-50/30 transition-colors ${i % 2 === 0 ? 'bg-white' : 'bg-surface-50/30'}`}>
+                  <td className="px-4 py-3 text-surface-500 whitespace-nowrap">{tx.date}</td>
+                  <td className="px-4 py-3 text-xs font-mono text-surface-400">{tx.id}</td>
+                  <td className="px-4 py-3">
+                    <p className="font-medium text-surface-900">{tx.description}</p>
+                    <p className="text-xs text-surface-400">{tx.category}</p>
+                  </td>
+                  <td className="px-4 py-3">
+                    <span className="text-xs font-mono bg-surface-100 px-2 py-0.5 rounded">{tx.syscohada}</span>
+                  </td>
+                  <td className="px-4 py-3 text-danger-600 font-medium">
+                    {tx.type === 'expense' ? tx.amount.toLocaleString('fr-FR') + ' FCFA' : '—'}
+                  </td>
+                  <td className="px-4 py-3 text-formalio-700 font-medium">
+                    {tx.type === 'income' ? tx.amount.toLocaleString('fr-FR') + ' FCFA' : '—'}
+                  </td>
+                  <td className="px-4 py-3 font-semibold text-surface-900">
+                    {(tx.type === 'income' ? tx.amount : -tx.amount).toLocaleString('fr-FR')} FCFA
+                  </td>
+                  <td className="px-4 py-3">
+                    <span className={`text-xs font-semibold px-2 py-0.5 rounded-full ${tx.type === 'income' ? 'bg-formalio-100 text-formalio-700' : 'bg-danger-50 text-danger-600'}`}>
+                      {tx.type === 'income' ? 'Produit' : 'Charge'}
+                    </span>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+        <div className="flex items-center justify-between border-t border-surface-200 px-6 py-3">
+          <p className="text-sm text-surface-500">{transactions.length} écritures · Page 1 / 3</p>
+          <div className="flex gap-2">
+            <button className="rounded-lg border border-surface-200 px-3 py-1.5 text-sm text-surface-600 hover:bg-surface-50">Précédent</button>
+            <button className="rounded-lg bg-formalio-700 px-3 py-1.5 text-sm text-white">Suivant</button>
+          </div>
+        </div>
+      </div>
+      <div className="bg-white rounded-2xl border border-surface-200 p-6">
+        <h3 className="font-semibold text-surface-900 mb-4">Journal comptable — dernières écritures</h3>
+        <div className="space-y-3">
+          {journalEntries.map((e) => (
+            <div key={e.id} className="border border-surface-100 rounded-xl p-4">
+              <div className="flex items-center justify-between mb-2">
+                <p className="text-sm font-semibold text-surface-900">{e.libelle}</p>
+                <p className="text-xs text-surface-400">{e.date} · {e.id}</p>
+              </div>
+              <div className="grid grid-cols-2 gap-3">
+                <div className="bg-danger-50 rounded-lg p-2">
+                  <p className="text-[10px] text-surface-400 uppercase font-medium">Débit</p>
+                  <p className="text-sm font-semibold text-danger-700">{e.debit.account}</p>
+                  <p className="text-xs text-danger-600">{e.debit.amount.toLocaleString('fr-FR')} FCFA</p>
+                </div>
+                <div className="bg-formalio-50 rounded-lg p-2">
+                  <p className="text-[10px] text-surface-400 uppercase font-medium">Crédit</p>
+                  <p className="text-sm font-semibold text-formalio-700">{e.credit.account}</p>
+                  <p className="text-xs text-formalio-600">{e.credit.amount.toLocaleString('fr-FR')} FCFA</p>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+
+  const ClientsView = () => {
+    const totals = invoices.reduce((a, inv) => {
+      if (inv.status === 'paid') a.paid += inv.total;
+      else if (inv.status === 'pending') a.pending += inv.total;
+      else a.overdue += inv.total;
+      return a;
+    }, { paid: 0, pending: 0, overdue: 0 });
+    return (
+      <div className="space-y-6">
+        <div className="flex items-center justify-between">
+          <div>
+            <h1 className="text-2xl font-bold text-surface-900">Facturation & Clients</h1>
+            <p className="text-sm text-surface-500 mt-1">Factures, devis, TVA 19,25% · Conforme DGI Cameroun</p>
+          </div>
+          <button className="flex items-center gap-2 px-4 py-2 bg-formalio-700 text-white rounded-xl text-sm font-medium hover:bg-formalio-800">
+            + Nouvelle facture
+          </button>
+        </div>
+        <div className="grid grid-cols-3 gap-4">
+          {[
+            { label: 'Factures payées', amount: totals.paid, color: 'bg-formalio-50 border-formalio-200', textColor: 'text-formalio-700' },
+            { label: 'En attente', amount: totals.pending, color: 'bg-amber-50 border-amber-200', textColor: 'text-amber-700' },
+            { label: 'En retard', amount: totals.overdue, color: 'bg-danger-50 border-danger-200', textColor: 'text-danger-700' },
+          ].map(s => (
+            <div key={s.label} className={`rounded-2xl border p-5 ${s.color}`}>
+              <p className="text-sm text-surface-600 font-medium">{s.label}</p>
+              <p className={`text-2xl font-bold mt-2 ${s.textColor}`}>{s.amount.toLocaleString('fr-FR')} FCFA</p>
+            </div>
+          ))}
+        </div>
+        <div className="bg-white rounded-2xl border border-surface-200 shadow-sm">
+          <div className="flex items-center justify-between border-b border-surface-200 px-6 py-4">
+            <h3 className="font-semibold text-surface-900">Toutes les factures</h3>
+            <div className="flex gap-2">
+              <button className="text-xs px-3 py-1.5 bg-surface-100 text-surface-600 rounded-lg">Toutes</button>
+              <button className="text-xs px-3 py-1.5 bg-formalio-100 text-formalio-700 rounded-lg">Payées</button>
+              <button className="text-xs px-3 py-1.5 bg-amber-100 text-amber-700 rounded-lg">En attente</button>
+              <button className="text-xs px-3 py-1.5 bg-danger-100 text-danger-700 rounded-lg">En retard</button>
+            </div>
+          </div>
+          <table className="w-full">
+            <thead className="bg-surface-50/80">
+              <tr className="border-b border-surface-200 text-left text-[11px] font-semibold uppercase tracking-wider text-surface-400">
+                <th className="px-6 py-3">Facture</th>
+                <th className="px-6 py-3">Client</th>
+                <th className="px-6 py-3">Date</th>
+                <th className="px-6 py-3">Échéance</th>
+                <th className="px-6 py-3">Montant HT</th>
+                <th className="px-6 py-3">TVA 19,25%</th>
+                <th className="px-6 py-3">Total TTC</th>
+                <th className="px-6 py-3">Statut</th>
+                <th className="px-6 py-3">Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              {invoices.map((inv, i) => {
+                const subtotal = inv.items.reduce((s, item) => s + item.qty * item.price, 0);
+                const tva = Math.round(subtotal * 0.1925);
+                return (
+                  <tr key={inv.id} className="border-b border-surface-100 text-sm hover:bg-formalio-50/30 transition-colors">
+                    <td className="px-6 py-4">
+                      <p className="font-mono text-xs font-semibold text-formalio-700">{inv.id}</p>
+                    </td>
+                    <td className="px-6 py-4">
+                      <p className="font-medium text-surface-900">{inv.client}</p>
+                      <p className="text-xs text-surface-400">{inv.clientPhone}</p>
+                    </td>
+                    <td className="px-6 py-4 text-surface-600">{inv.date}</td>
+                    <td className="px-6 py-4 text-surface-600">{inv.dueDate}</td>
+                    <td className="px-6 py-4 font-medium">{subtotal.toLocaleString('fr-FR')} FCFA</td>
+                    <td className="px-6 py-4 text-amber-600">{tva.toLocaleString('fr-FR')} FCFA</td>
+                    <td className="px-6 py-4 font-semibold text-surface-900">{inv.total.toLocaleString('fr-FR')} FCFA</td>
+                    <td className="px-6 py-4">
+                      <span className={`text-xs font-semibold px-2.5 py-1 rounded-full ${inv.status === 'paid' ? 'bg-formalio-100 text-formalio-700' : inv.status === 'overdue' ? 'bg-danger-100 text-danger-700' : 'bg-amber-100 text-amber-700'}`}>
+                        {inv.status === 'paid' ? 'Payée' : inv.status === 'overdue' ? 'En retard' : 'En attente'}
+                      </span>
+                    </td>
+                    <td className="px-6 py-4">
+                      <div className="flex gap-2">
+                        <button className="text-xs text-formalio-700 font-medium hover:underline">Voir</button>
+                        <button className="text-xs text-surface-500 hover:underline">PDF</button>
+                      </div>
+                    </td>
+                  </tr>
+                );
+              })}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    );
+  };
+
+  const SettingsView = () => (
+    <div className="space-y-6 max-w-3xl">
+      <div>
+        <h1 className="text-2xl font-bold text-surface-900">Paramètres</h1>
+        <p className="text-sm text-surface-500 mt-1">Configuration de votre compte et de votre entreprise</p>
+      </div>
+      <div className="bg-white rounded-2xl border border-surface-200 p-6 space-y-6">
+        <div>
+          <h3 className="text-base font-semibold text-surface-900 mb-4">Profil de l'entreprise</h3>
+          <div className="grid grid-cols-2 gap-4">
+            {[
+              { label: 'Nom de l\'entreprise', value: 'Boutique Élégance SARL' },
+              { label: 'Numéro contribuable (DGI)', value: 'NC-CMR-2024-0042' },
+              { label: 'RCCM / RC', value: 'RC/YAO/2021/B/0312' },
+              { label: 'Régime fiscal', value: 'Réel simplifié' },
+              { label: 'Activité principale', value: 'Commerce de détail textile' },
+              { label: 'Code APE', value: '4719Z' },
+            ].map(f => (
+              <div key={f.label}>
+                <label className="block text-xs font-medium text-surface-500 mb-1">{f.label}</label>
+                <input defaultValue={f.value} className="w-full border border-surface-200 rounded-xl px-3 py-2.5 text-sm text-surface-900 focus:outline-none focus:border-formalio-400" />
+              </div>
+            ))}
+          </div>
+        </div>
+        <div className="border-t border-surface-100 pt-6">
+          <h3 className="text-base font-semibold text-surface-900 mb-4">Paramètres comptables</h3>
+          <div className="grid grid-cols-2 gap-4">
+            {[
+              { label: 'Exercice fiscal', value: '01 Jan 2025 — 31 Déc 2025' },
+              { label: 'Plan comptable', value: 'SYSCOHADA 2017 (révisé)' },
+              { label: 'Devise', value: 'FCFA — Franc CFA (XAF)' },
+              { label: 'Taux TVA', value: '19,25%' },
+            ].map(f => (
+              <div key={f.label}>
+                <label className="block text-xs font-medium text-surface-500 mb-1">{f.label}</label>
+                <input defaultValue={f.value} className="w-full border border-surface-200 rounded-xl px-3 py-2.5 text-sm text-surface-900 focus:outline-none focus:border-formalio-400" />
+              </div>
+            ))}
+          </div>
+        </div>
+        <div className="border-t border-surface-100 pt-6">
+          <h3 className="text-base font-semibold text-surface-900 mb-4">Intégrations</h3>
+          <div className="space-y-3">
+            {[
+              { name: 'MTN Mobile Money', status: 'Connecté', tone: 'green' },
+              { name: 'Orange Money', status: 'Connecté', tone: 'green' },
+              { name: 'NotchPay (paiement)', status: 'Actif', tone: 'green' },
+              { name: 'DGI Cameroun (e-impôts)', status: 'Non connecté', tone: 'gray' },
+              { name: 'CNPS (déclarations)', status: 'Configuré', tone: 'amber' },
+            ].map(int => (
+              <div key={int.name} className="flex items-center justify-between p-3 border border-surface-200 rounded-xl">
+                <p className="text-sm font-medium text-surface-900">{int.name}</p>
+                <span className={`text-xs font-semibold px-2.5 py-1 rounded-full ${int.tone === 'green' ? 'bg-formalio-100 text-formalio-700' : int.tone === 'amber' ? 'bg-amber-100 text-amber-700' : 'bg-surface-100 text-surface-500'}`}>
+                  {int.status}
+                </span>
+              </div>
+            ))}
+          </div>
+        </div>
+        <div className="flex justify-end pt-2">
+          <button className="px-6 py-2.5 bg-formalio-700 text-white rounded-xl text-sm font-semibold hover:bg-formalio-800 transition-colors">
+            Enregistrer les modifications
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+
   const views: Record<string, React.ReactNode> = {
     dashboard: <DashboardView />,
     cashflow: <CashflowView />,
     credit: <CreditView />,
-    transactions: <DashboardView />,
+    transactions: <TransactionsView />,
     reports: <ReportsView />,
     tax: <TaxView />,
-    clients: <DashboardView />,
-    settings: <CreditView />,
+    clients: <ClientsView />,
+    settings: <SettingsView />,
   };
 
   return (

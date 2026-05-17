@@ -7,7 +7,7 @@ import {
   Settings, LogOut, Moon, Globe, CreditCard, Award,
   Share2, AlertTriangle, WifiOff, RefreshCw,
   Gift, Phone, MapPin, MessageCircle,
-  Search, Filter, CheckCircle2, Sparkles, FileSpreadsheet
+  Search, Filter, CheckCircle2, Sparkles, FileSpreadsheet, Briefcase
 } from 'lucide-react';
 import { LogoMark } from './Logo';
 import { SYSCOHADAReport } from './SYSCOHADAReports';
@@ -20,7 +20,8 @@ import { DownloadModal } from './DownloadModal';
 import { useToast } from './Toast';
 import {
   transactions as initialTransactions, cashFlowData,
-  notifications as initialNotifications, aiInsights, pricingPlans
+  notifications as initialNotifications, aiInsights, pricingPlans,
+  invoices, journalEntries, grandLivreAccounts, bilanData, compteResultatData,
 } from '../data/demoData';
 import {
   BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer
@@ -32,7 +33,8 @@ type Screen =
   | 'dashboard' | 'transactions' | 'add-transaction'
   | 'cashflow' | 'credit-score' | 'reports' | 'mobile-money'
   | 'notifications' | 'ai-insights' | 'tax' | 'profile' | 'settings'
-  | 'security' | 'subscription' | 'help' | 'referral' | 'offline';
+  | 'security' | 'subscription' | 'help' | 'referral' | 'offline'
+  | 'invoice' | 'grand-livre' | 'payroll';
 
 export const MobileApp: React.FC = () => {
   const { showToast } = useToast();
@@ -57,7 +59,7 @@ export const MobileApp: React.FC = () => {
         'dashboard', 'transactions', 'cashflow', 'credit-score', 'reports',
         'notifications', 'ai-insights', 'tax', 'profile', 'settings',
         'security', 'subscription', 'help', 'referral', 'offline', 'mobile-money',
-        'add-transaction',
+        'add-transaction', 'invoice', 'grand-livre', 'payroll',
       ].includes(screen)
     );
   }, [screen]);
@@ -77,6 +79,7 @@ export const MobileApp: React.FC = () => {
       'settings': 'profile', 'security': 'settings',
       'subscription': 'profile', 'help': 'profile',
       'referral': 'profile', 'offline': 'dashboard',
+      'invoice': 'dashboard', 'grand-livre': 'reports', 'payroll': 'dashboard',
     };
     setScreen(backMap[screen] || 'dashboard');
   };
@@ -87,6 +90,7 @@ export const MobileApp: React.FC = () => {
       date: new Date().toISOString().split('T')[0],
       description: parsed.description,
       category: parsed.category,
+      syscohada: '',
       type: parsed.type,
       amount: parsed.amount,
       method: parsed.method,
@@ -602,6 +606,7 @@ export const MobileApp: React.FC = () => {
         date: new Date().toISOString().split('T')[0],
         description: desc,
         category: category || 'Autres',
+        syscohada: '',
         type,
         amount: Number(amount),
         method,
@@ -1142,6 +1147,9 @@ export const MobileApp: React.FC = () => {
       <div className="px-4 -mt-3">
         <div className="bg-white rounded-2xl border border-surface-200 overflow-hidden shadow-card">
           {[
+            { icon: FileText, label: 'Facturation', badge: '6 factures', action: () => navigate('invoice') },
+            { icon: FileSpreadsheet, label: 'Grand Livre & Journal', action: () => navigate('grand-livre') },
+            { icon: Briefcase, label: 'Paie & CNPS', action: () => navigate('payroll') },
             { icon: Settings, label: 'Paramètres', action: () => navigate('settings') },
             { icon: Shield, label: 'Sécurité', action: () => navigate('security') },
             { icon: CreditCard, label: 'Abonnement', badge: 'Pro', action: () => navigate('subscription') },
@@ -1378,6 +1386,227 @@ export const MobileApp: React.FC = () => {
     </ScreenWrapper>
   );
 
+  const InvoiceScreen = () => {
+    const [selected, setSelected] = useState<typeof invoices[0] | null>(null);
+    if (selected) {
+      const subtotal = selected.items.reduce((s, i) => s + i.qty * i.price, 0);
+      const tva = Math.round(subtotal * 0.1925);
+      return (
+        <ScreenWrapper title={selected.id} rightAction={
+          <button onClick={() => openDownload(`Facture ${selected.id}`, selected.date)} className="px-3 py-1.5 bg-formalio-700 text-white text-xs font-semibold rounded-lg flex items-center gap-1"><FileSpreadsheet className="w-3.5 h-3.5" />PDF</button>
+        }>
+          <button onClick={() => setSelected(null)} className="text-xs text-formalio-700 font-medium mb-3 flex items-center gap-1"><ArrowLeft className="w-3 h-3" /> Retour</button>
+          <div className="bg-white rounded-2xl border border-surface-200 p-4 mb-4">
+            <div className="flex items-center justify-between mb-3">
+              <div><p className="text-xs text-surface-500">Client</p><p className="text-sm font-semibold text-surface-900">{selected.client}</p><p className="text-xs text-surface-400">{selected.clientPhone}</p></div>
+              <span className={`text-xs font-bold px-2.5 py-1 rounded-full ${selected.status === 'paid' ? 'bg-formalio-100 text-formalio-700' : selected.status === 'overdue' ? 'bg-danger-100 text-danger-700' : 'bg-amber-100 text-amber-700'}`}>
+                {selected.status === 'paid' ? 'Payée' : selected.status === 'overdue' ? 'En retard' : 'En attente'}
+              </span>
+            </div>
+            <div className="grid grid-cols-2 gap-2 text-xs text-surface-500 mb-4">
+              <div><span>Date : </span><span className="text-surface-800 font-medium">{selected.date}</span></div>
+              <div><span>Échéance : </span><span className="text-surface-800 font-medium">{selected.dueDate}</span></div>
+            </div>
+            <div className="border-t border-surface-100 pt-3 space-y-2">
+              {selected.items.map((item, i) => (
+                <div key={i} className="flex items-center justify-between">
+                  <div><p className="text-sm text-surface-900">{item.desc}</p><p className="text-xs text-surface-400">×{item.qty} × {item.price.toLocaleString('fr-FR')} FCFA</p></div>
+                  <span className="text-sm font-semibold text-surface-900">{(item.qty * item.price).toLocaleString('fr-FR')} FCFA</span>
+                </div>
+              ))}
+            </div>
+            <div className="border-t border-surface-100 mt-3 pt-3 space-y-1">
+              <div className="flex justify-between text-xs text-surface-500"><span>Sous-total HT</span><span>{subtotal.toLocaleString('fr-FR')} FCFA</span></div>
+              <div className="flex justify-between text-xs text-surface-500"><span>TVA 19,25%</span><span>{tva.toLocaleString('fr-FR')} FCFA</span></div>
+              <div className="flex justify-between text-sm font-bold text-surface-900 pt-1 border-t border-surface-100"><span>Total TTC</span><span>{(subtotal + tva).toLocaleString('fr-FR')} FCFA</span></div>
+            </div>
+          </div>
+          <div className="text-center">
+            <p className="text-xs text-surface-400 italic">Conforme SYSCOHADA 2017 · ONECCA-CM · DGI Cameroun</p>
+          </div>
+        </ScreenWrapper>
+      );
+    }
+    const totals = invoices.reduce((a, inv) => {
+      if (inv.status === 'paid') a.paid += inv.total;
+      else if (inv.status === 'pending') a.pending += inv.total;
+      else a.overdue += inv.total;
+      return a;
+    }, { paid: 0, pending: 0, overdue: 0 });
+    return (
+      <ScreenWrapper title="Facturation" rightAction={
+        <button onClick={() => showToast({ type: 'info', title: 'Nouvelle facture', message: 'Formulaire de création bientôt' })} className="px-3 py-1.5 bg-formalio-700 text-white text-xs font-semibold rounded-lg flex items-center gap-1"><Plus className="w-3.5 h-3.5" />Créer</button>
+      }>
+        <div className="grid grid-cols-3 gap-2 mb-4">
+          {[
+            { label: 'Payées', amount: totals.paid, color: 'bg-formalio-50 border-formalio-200 text-formalio-700' },
+            { label: 'En attente', amount: totals.pending, color: 'bg-amber-50 border-amber-200 text-amber-700' },
+            { label: 'En retard', amount: totals.overdue, color: 'bg-danger-50 border-danger-200 text-danger-700' },
+          ].map(s => (
+            <div key={s.label} className={`rounded-xl p-3 border text-center ${s.color}`}>
+              <p className="text-[10px] font-medium">{s.label}</p>
+              <p className="text-xs font-bold mt-1">{(s.amount / 1000).toFixed(0)}K FCFA</p>
+            </div>
+          ))}
+        </div>
+        <div className="space-y-2">
+          {invoices.map((inv, i) => (
+            <motion.button key={inv.id} initial={{ opacity: 0, y: 5 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.04 }} onClick={() => setSelected(inv)}
+              className="w-full bg-white rounded-xl p-3 border border-surface-200 text-left flex items-center gap-3 active:scale-[0.99] transition-all hover:border-formalio-300">
+              <div className={`w-9 h-9 rounded-lg flex items-center justify-center shrink-0 ${inv.status === 'paid' ? 'bg-formalio-50' : inv.status === 'overdue' ? 'bg-danger-50' : 'bg-amber-50'}`}>
+                <FileText className={`w-4 h-4 ${inv.status === 'paid' ? 'text-formalio-600' : inv.status === 'overdue' ? 'text-danger-500' : 'text-amber-600'}`} />
+              </div>
+              <div className="flex-1 min-w-0">
+                <p className="text-sm font-medium text-surface-900 truncate">{inv.client}</p>
+                <p className="text-xs text-surface-400">{inv.id} · {inv.date}</p>
+              </div>
+              <div className="text-right shrink-0">
+                <p className="text-sm font-bold text-surface-900">{inv.total.toLocaleString('fr-FR')}</p>
+                <span className={`text-[10px] font-semibold ${inv.status === 'paid' ? 'text-formalio-600' : inv.status === 'overdue' ? 'text-danger-600' : 'text-amber-600'}`}>
+                  {inv.status === 'paid' ? 'Payée' : inv.status === 'overdue' ? 'En retard' : 'En attente'}
+                </span>
+              </div>
+            </motion.button>
+          ))}
+        </div>
+      </ScreenWrapper>
+    );
+  };
+
+  const GrandLivreScreen = () => {
+    const [selectedAcc, setSelectedAcc] = useState<typeof grandLivreAccounts[0] | null>(null);
+    if (selectedAcc) {
+      return (
+        <ScreenWrapper title={`${selectedAcc.code} — ${selectedAcc.label}`}>
+          <button onClick={() => setSelectedAcc(null)} className="text-xs text-formalio-700 font-medium mb-3 flex items-center gap-1"><ArrowLeft className="w-3 h-3" /> Grand Livre</button>
+          <div className="bg-white rounded-2xl border border-surface-200 p-4 mb-4">
+            <div className="flex items-center justify-between mb-3">
+              <div><p className="text-xs text-surface-500 capitalize">{selectedAcc.type}</p><p className="text-sm font-bold text-surface-900">Compte {selectedAcc.code}</p></div>
+              <div className="text-right"><p className="text-xs text-surface-500">Solde</p><p className="text-base font-bold text-formalio-700">{selectedAcc.solde.toLocaleString('fr-FR')} FCFA</p></div>
+            </div>
+            <div className="border-t border-surface-100 pt-3">
+              <div className="grid grid-cols-4 gap-1 mb-2">
+                {['Date', 'Libellé', 'Débit', 'Crédit'].map(h => <p key={h} className="text-[10px] font-bold text-surface-500 uppercase">{h}</p>)}
+              </div>
+              {selectedAcc.mouvements.map((m, i) => (
+                <div key={i} className="grid grid-cols-4 gap-1 py-2 border-t border-surface-50">
+                  <p className="text-[10px] text-surface-500">{m.date}</p>
+                  <p className="text-[10px] text-surface-700 col-span-1 truncate">{m.libelle}</p>
+                  <p className="text-[10px] font-medium text-danger-600">{m.debit > 0 ? m.debit.toLocaleString('fr-FR') : '-'}</p>
+                  <p className="text-[10px] font-medium text-formalio-600">{m.credit > 0 ? m.credit.toLocaleString('fr-FR') : '-'}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </ScreenWrapper>
+      );
+    }
+    return (
+      <ScreenWrapper title="Grand Livre" rightAction={
+        <button onClick={() => openDownload('Grand Livre SYSCOHADA', 'Janvier 2025')} className="px-3 py-1.5 bg-formalio-700 text-white text-xs font-semibold rounded-lg flex items-center gap-1"><FileSpreadsheet className="w-3.5 h-3.5" />Export</button>
+      }>
+        <div className="bg-formalio-50 border border-formalio-200 rounded-xl p-3 mb-4">
+          <p className="text-xs font-semibold text-formalio-800">Grand Livre SYSCOHADA 2017</p>
+          <p className="text-xs text-formalio-600 mt-0.5">Plan Comptable OHADA · Classes 1–7 · Exercice 2025</p>
+        </div>
+        <div className="space-y-2">
+          {grandLivreAccounts.map((acc, i) => (
+            <motion.button key={acc.code} initial={{ opacity: 0, x: -5 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: i * 0.04 }} onClick={() => setSelectedAcc(acc)}
+              className="w-full bg-white rounded-xl p-3 border border-surface-200 flex items-center gap-3 text-left active:scale-[0.99] transition-all hover:border-formalio-300">
+              <div className={`w-9 h-9 rounded-lg flex items-center justify-center shrink-0 text-xs font-bold ${acc.type === 'actif' || acc.type === 'produit' ? 'bg-formalio-50 text-formalio-700' : acc.type === 'charge' ? 'bg-danger-50 text-danger-600' : 'bg-surface-100 text-surface-600'}`}>
+                {acc.code}
+              </div>
+              <div className="flex-1 min-w-0">
+                <p className="text-sm font-medium text-surface-900 truncate">{acc.label}</p>
+                <p className="text-xs text-surface-400 capitalize">{acc.type} · {acc.mouvements.length} écriture(s)</p>
+              </div>
+              <div className="text-right shrink-0">
+                <p className="text-sm font-bold text-surface-900">{acc.solde.toLocaleString('fr-FR')}</p>
+                <p className="text-[10px] text-surface-400">FCFA</p>
+              </div>
+            </motion.button>
+          ))}
+        </div>
+        <div className="mt-4 bg-white rounded-2xl border border-surface-200 p-4">
+          <p className="text-xs font-semibold text-surface-900 mb-2">Journal Comptable — Dernières écritures</p>
+          <div className="space-y-2">
+            {journalEntries.map((e, i) => (
+              <div key={e.id} className="border-l-2 border-formalio-300 pl-3 py-1">
+                <p className="text-[10px] text-surface-500">{e.date} · {e.id}</p>
+                <p className="text-xs font-medium text-surface-800">{e.libelle}</p>
+                <div className="flex gap-4 mt-0.5">
+                  <span className="text-[10px] text-danger-600">D: {e.debit.account} {e.debit.amount.toLocaleString('fr-FR')}</span>
+                  <span className="text-[10px] text-formalio-600">C: {e.credit.account} {e.credit.amount.toLocaleString('fr-FR')}</span>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </ScreenWrapper>
+    );
+  };
+
+  const PayrollScreen = () => {
+    const employees = [
+      { name: 'Marie-Claire Biyong', poste: 'Assistante Commerciale', salaireBrut: 120000, cnpsPart: 12000, irpp: 8500, salaireNet: 99500, status: 'payé' },
+      { name: 'Jean-Baptiste Nkoulou', poste: 'Livreur', salaireBrut: 85000, cnpsPart: 8500, irpp: 4200, salaireNet: 72300, status: 'payé' },
+      { name: 'Solange Elong', poste: 'Vendeuse', salaireBrut: 95000, cnpsPart: 9500, irpp: 6100, salaireNet: 79400, status: 'en attente' },
+    ];
+    const totalBrut = employees.reduce((s, e) => s + e.salaireBrut, 0);
+    const totalNet = employees.reduce((s, e) => s + e.salaireNet, 0);
+    const totalCNPS = employees.reduce((s, e) => s + e.cnpsPart, 0);
+    return (
+      <ScreenWrapper title="Paie & CNPS">
+        <div className="grid grid-cols-2 gap-3 mb-4">
+          <div className="bg-formalio-50 border border-formalio-100 rounded-xl p-3">
+            <p className="text-xs text-formalio-600">Masse salariale</p>
+            <p className="text-base font-bold text-formalio-800 mt-1">{totalBrut.toLocaleString('fr-FR')} FCFA</p>
+            <p className="text-[10px] text-formalio-500">Brut mensuel</p>
+          </div>
+          <div className="bg-white border border-surface-200 rounded-xl p-3">
+            <p className="text-xs text-surface-500">Net total employés</p>
+            <p className="text-base font-bold text-surface-900 mt-1">{totalNet.toLocaleString('fr-FR')} FCFA</p>
+            <p className="text-[10px] text-surface-400">Après retenues</p>
+          </div>
+        </div>
+        <div className="bg-amber-50 border border-amber-200 rounded-xl p-3 mb-4 flex items-start gap-3">
+          <AlertTriangle className="w-5 h-5 text-amber-600 shrink-0 mt-0.5" />
+          <div>
+            <p className="text-xs font-semibold text-amber-800">CNPS — Cotisations sociales dues</p>
+            <p className="text-xs text-amber-700 mt-0.5">Part employeur + salariale : <span className="font-bold">{(totalCNPS * 1.4).toLocaleString('fr-FR')} FCFA</span> · Échéance 28 Jan</p>
+          </div>
+        </div>
+        <p className="text-sm font-semibold text-surface-900 mb-2">Salariés — Janvier 2025</p>
+        <div className="space-y-2 mb-4">
+          {employees.map((emp, i) => (
+            <motion.div key={emp.name} initial={{ opacity: 0, y: 5 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.06 }}
+              className="bg-white rounded-xl border border-surface-200 p-3">
+              <div className="flex items-center justify-between mb-2">
+                <div>
+                  <p className="text-sm font-medium text-surface-900">{emp.name}</p>
+                  <p className="text-xs text-surface-400">{emp.poste}</p>
+                </div>
+                <span className={`text-[10px] font-semibold px-2 py-0.5 rounded-full ${emp.status === 'payé' ? 'bg-formalio-100 text-formalio-700' : 'bg-amber-100 text-amber-700'}`}>
+                  {emp.status === 'payé' ? 'Payé' : 'En attente'}
+                </span>
+              </div>
+              <div className="grid grid-cols-3 gap-2 text-center bg-surface-50 rounded-lg p-2">
+                <div><p className="text-[10px] text-surface-400">Brut</p><p className="text-xs font-bold text-surface-700">{(emp.salaireBrut / 1000).toFixed(0)}K</p></div>
+                <div><p className="text-[10px] text-surface-400">CNPS+IRPP</p><p className="text-xs font-bold text-danger-600">-{((emp.cnpsPart + emp.irpp) / 1000).toFixed(0)}K</p></div>
+                <div><p className="text-[10px] text-surface-400">Net</p><p className="text-xs font-bold text-formalio-700">{(emp.salaireNet / 1000).toFixed(0)}K</p></div>
+              </div>
+            </motion.div>
+          ))}
+        </div>
+        <button onClick={() => showToast({ type: 'success', title: 'Bulletins générés', message: '3 bulletins de paie PDF envoyés par SMS' })}
+          className="w-full py-3.5 bg-formalio-700 text-white rounded-2xl font-semibold text-sm active:scale-[0.98] transition-transform flex items-center justify-center gap-2">
+          <FileText className="w-4 h-4" /> Générer les bulletins de paie
+        </button>
+        <p className="text-center text-xs text-surface-400 mt-3">Conforme CNPS Cameroun · IRPP calculé automatiquement</p>
+      </ScreenWrapper>
+    );
+  };
+
   const screens: Record<Screen, React.ReactNode> = {
     auth: <AuthScreenWrapper />,
     'business-setup': <BusinessSetupScreen />,
@@ -1398,6 +1627,9 @@ export const MobileApp: React.FC = () => {
     help: <HelpScreen />,
     referral: <ReferralScreen />,
     offline: <OfflineScreen />,
+    invoice: <InvoiceScreen />,
+    'grand-livre': <GrandLivreScreen />,
+    payroll: <PayrollScreen />,
   };
 
   return (

@@ -1,10 +1,10 @@
 import React, { useMemo, useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import {
-  Activity, AlertTriangle, ArchiveRestore, Ban, Bell, Check, CheckCircle2, ChevronDown, Clock,
+  Activity, AlertTriangle, ArchiveRestore, Ban, BarChart3, Bell, Check, CheckCircle2, ChevronDown, Clock,
   Cloud, Download, Eye, FileText, Filter, Flag, HardDrive, KeyRound,
   LayoutDashboard, LifeBuoy, Lock, Mail, Megaphone, MoreHorizontal, NotebookPen,
-  RefreshCw, Search, Server, ShieldAlert, ShieldCheck, Trash2, UploadCloud, UserCheck,
+  RefreshCw, Search, Server, ShieldAlert, ShieldCheck, Star, Trash2, UploadCloud, UserCheck,
   Users, Wallet, X, Zap
 } from 'lucide-react';
 import { Logo } from './Logo';
@@ -15,7 +15,7 @@ import {
   ResponsiveContainer, Tooltip, XAxis, YAxis
 } from 'recharts';
 
-type AdminView = 'overview' | 'users' | 'support' | 'system' | 'fraud';
+type AdminView = 'overview' | 'users' | 'support' | 'system' | 'fraud' | 'analytics' | 'accountants';
 type UserStatus = 'active' | 'inactive' | 'suspended' | 'restricted';
 type RiskLevel = 'low' | 'medium' | 'high' | 'critical';
 type KycStatus = 'verified' | 'pending' | 'rejected' | 'manual_review';
@@ -122,6 +122,8 @@ const sidebarItems = [
   { icon: LifeBuoy, label: 'Support Center', id: 'support' as AdminView },
   { icon: Server, label: 'System Ops', id: 'system' as AdminView },
   { icon: ShieldAlert, label: 'Fraud Watch', id: 'fraud' as AdminView },
+  { icon: BarChart3, label: 'Analytics MRR', id: 'analytics' as AdminView },
+  { icon: FileText, label: 'Comptables ONECCA', id: 'accountants' as AdminView },
 ];
 
 const statusClass = (status: UserStatus) => ({
@@ -380,7 +382,203 @@ export const AdminDashboard: React.FC = () => {
 
   const FraudPage = () => <SystemPage />;
 
-  const views: Record<AdminView, React.ReactNode> = { overview: <OverviewPage />, users: <UsersPage />, support: <SupportPage />, system: <SystemPage />, fraud: <FraudPage /> };
+  const mrrData = [
+    { month: 'Juil', mrr: 3800000, users: 2400, arr: 45600000 },
+    { month: 'Août', mrr: 5100000, users: 3100, arr: 61200000 },
+    { month: 'Sep', mrr: 6200000, users: 3900, arr: 74400000 },
+    { month: 'Oct', mrr: 7800000, users: 4700, arr: 93600000 },
+    { month: 'Nov', mrr: 9400000, users: 5600, arr: 112800000 },
+    { month: 'Déc', mrr: 10200000, users: 6200, arr: 122400000 },
+    { month: 'Jan', mrr: 11240000, users: 6980, arr: 134880000 },
+  ];
+  const planBreakdown = [
+    { name: 'Gratuit', users: 3890, color: '#94a3b8' },
+    { name: 'Pro', users: 2640, color: '#059669' },
+    { name: 'Premium', users: 420, color: '#0f4f4a' },
+    { name: 'Lifetime', users: 30, color: '#f59e0b' },
+  ];
+  const revenueByCountry = [
+    { pays: 'Cameroun', rev: 8920000, users: 5840 },
+    { pays: 'Côte d\'Ivoire', rev: 1240000, users: 620 },
+    { pays: 'Sénégal', rev: 680000, users: 340 },
+    { pays: 'Gabon', rev: 280000, users: 140 },
+    { pays: 'Bénin', rev: 120000, users: 40 },
+  ];
+
+  const AnalyticsPage = () => (
+    <div className="space-y-6">
+      <SectionTitle kicker="Revenue Intelligence" title="Analytics & MRR" copy="Croissance abonnements, répartition plans, expansion régionale CEMAC/UEMOA et métriques SaaS clés." />
+      <div className="grid grid-cols-4 gap-4">
+        <StatCard label="MRR (Jan 2025)" value={11240000} sub="+10% MoM · Target 15M" icon={Wallet} />
+        <StatCard label="ARR projeté" value={134880000} sub="Exercice 2025" icon={BarChart3} />
+        <StatCard label="ARPU moyen" value={8200} sub="FCFA/utilisateur payant" icon={Users} tone="amber" />
+        <StatCard label="Churn mensuel" value={4} sub="Objectif < 3%" icon={Activity} tone="red" />
+      </div>
+      <div className="grid grid-cols-[minmax(0,1fr)_380px] gap-6">
+        <div className="rounded-2xl border border-surface-200 bg-white p-6 shadow-card">
+          <h3 className="text-lg font-bold text-surface-900 mb-4">MRR & Croissance utilisateurs (7 mois)</h3>
+          <div className="h-80">
+            <ResponsiveContainer width="100%" height="100%">
+              <BarChart data={mrrData}>
+                <CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" />
+                <XAxis dataKey="month" tick={{ fontSize: 12 }} />
+                <YAxis yAxisId="left" tickFormatter={(v) => `${(v / 1000000).toFixed(0)}M`} tick={{ fontSize: 11 }} />
+                <YAxis yAxisId="right" orientation="right" tick={{ fontSize: 11 }} />
+                <Tooltip formatter={(v: number, name: string) => name === 'mrr' ? [`${v.toLocaleString('fr-FR')} FCFA`, 'MRR'] : [v, 'Utilisateurs']} />
+                <Bar yAxisId="left" dataKey="mrr" name="mrr" fill="#0f4f4a" radius={[6, 6, 0, 0]} />
+                <Bar yAxisId="right" dataKey="users" name="users" fill="#3b82f6" radius={[6, 6, 0, 0]} opacity={0.6} />
+              </BarChart>
+            </ResponsiveContainer>
+          </div>
+        </div>
+        <div className="rounded-2xl border border-surface-200 bg-white p-6 shadow-card">
+          <h3 className="text-lg font-bold text-surface-900 mb-4">Répartition par plan</h3>
+          <div className="h-52">
+            <ResponsiveContainer width="100%" height="100%">
+              <PieChart>
+                <Pie data={planBreakdown} innerRadius={60} outerRadius={90} dataKey="users" nameKey="name">
+                  {planBreakdown.map((p) => <Cell key={p.name} fill={p.color} />)}
+                </Pie>
+                <Tooltip formatter={(v: number) => [`${v} utilisateurs`]} />
+              </PieChart>
+            </ResponsiveContainer>
+          </div>
+          <div className="space-y-2 mt-2">
+            {planBreakdown.map((p) => (
+              <div key={p.name} className="flex items-center justify-between">
+                <div className="flex items-center gap-2">
+                  <span className="w-3 h-3 rounded-full" style={{ backgroundColor: p.color }} />
+                  <span className="text-sm text-surface-700">{p.name}</span>
+                </div>
+                <span className="text-sm font-semibold text-surface-900">{p.users.toLocaleString('fr-FR')}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+      <div className="rounded-2xl border border-surface-200 bg-white shadow-card">
+        <div className="border-b border-surface-200 px-6 py-4">
+          <h3 className="font-semibold text-surface-900">Expansion régionale CEMAC · UEMOA</h3>
+        </div>
+        <table className="w-full">
+          <thead className="bg-surface-50">
+            <tr className="border-b border-surface-200 text-left text-[11px] font-semibold uppercase tracking-wider text-surface-400">
+              <th className="px-6 py-3">Pays</th>
+              <th className="px-6 py-3">Utilisateurs</th>
+              <th className="px-6 py-3">Revenus FCFA</th>
+              <th className="px-6 py-3">Part MRR</th>
+              <th className="px-6 py-3">Statut</th>
+            </tr>
+          </thead>
+          <tbody>
+            {revenueByCountry.map((c, i) => (
+              <tr key={c.pays} className="border-b border-surface-100 hover:bg-formalio-50/20">
+                <td className="px-6 py-3 font-medium text-surface-900">{c.pays}</td>
+                <td className="px-6 py-3">{c.users.toLocaleString('fr-FR')}</td>
+                <td className="px-6 py-3 font-semibold">{c.rev.toLocaleString('fr-FR')} FCFA</td>
+                <td className="px-6 py-3">
+                  <div className="flex items-center gap-2">
+                    <div className="h-1.5 w-32 bg-surface-100 rounded-full"><div className="h-full bg-formalio-600 rounded-full" style={{ width: `${(c.rev / 11240000) * 100}%` }} /></div>
+                    <span className="text-xs text-surface-500">{((c.rev / 11240000) * 100).toFixed(0)}%</span>
+                  </div>
+                </td>
+                <td className="px-6 py-3"><span className={`text-xs font-semibold px-2 py-0.5 rounded-full ${i === 0 ? 'bg-formalio-100 text-formalio-700' : 'bg-amber-100 text-amber-700'}`}>{i === 0 ? 'Principal' : 'Expansion'}</span></td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  );
+
+  const oneccaAccountants = [
+    { id: 'ONECCA-001', name: 'Dr. Etoundi Pierre-Marie', firm: 'Cabinet Etoundi & Associés', city: 'Yaoundé', specialty: 'PME & SYSCOHADA', clients: 48, rating: 4.9, status: 'vérifié', badge: 'Expert-comptable agréé' },
+    { id: 'ONECCA-002', name: 'Mme. Ngo Biyong Claire', firm: 'BiyongExpert Consulting', city: 'Douala', specialty: 'Fiscalité DGI · TVA', clients: 37, rating: 4.8, status: 'vérifié', badge: 'Commissaire aux comptes' },
+    { id: 'ONECCA-003', name: 'M. Tchouto Serge', firm: 'Tchouto Finance SARL', city: 'Bafoussam', specialty: 'Audit COBAC · Banques', clients: 22, rating: 4.7, status: 'vérifié', badge: 'Expert-comptable agréé' },
+    { id: 'ONECCA-004', name: 'Mme. Kameni Astride', firm: 'AK Comptabilité', city: 'Douala', specialty: 'Start-ups & fintech', clients: 29, rating: 4.6, status: 'en revue', badge: 'Candidate ONECCA' },
+    { id: 'ONECCA-005', name: 'M. Bekono Rodrigue', firm: 'Bekono Tax Advisors', city: 'Yaoundé', specialty: 'OHADA · CNPS · Paie', clients: 56, rating: 4.9, status: 'vérifié', badge: 'Expert-comptable agréé' },
+  ];
+
+  const AccountantsPage = () => (
+    <div className="space-y-6">
+      <div className="flex items-start justify-between">
+        <SectionTitle kicker="Marketplace ONECCA-CM" title="Comptables Agréés" copy="Réseau d'experts-comptables ONECCA certifiés pour accompagner les PME Formalio. Gestion, validation et monitoring de la marketplace." />
+        <button onClick={() => doAction('Invitation envoyée à ONECCA-CM')} className="rounded-xl bg-formalio-700 px-4 py-2 text-sm font-medium text-white hover:bg-formalio-800">+ Inviter un comptable</button>
+      </div>
+      <div className="grid grid-cols-4 gap-4">
+        <StatCard label="Comptables actifs" value={oneccaAccountants.filter(a => a.status === 'vérifié').length} sub="Certifiés ONECCA-CM" icon={Users} />
+        <StatCard label="Missions en cours" value={192} sub="+34% vs mois dernier" icon={FileText} />
+        <StatCard label="Satisfaction moyenne" value={4} sub="/5 · 847 avis clients" icon={Star} tone="amber" />
+        <StatCard label="PME accompagnées" value={192} sub="Formalisées avec crédit" icon={Wallet} />
+      </div>
+      <div className="rounded-2xl border border-surface-200 bg-white shadow-card">
+        <div className="flex items-center justify-between border-b border-surface-200 px-6 py-4">
+          <h3 className="font-semibold text-surface-900">Réseau Formalio × ONECCA</h3>
+          <div className="flex gap-2">
+            <button className="text-xs px-3 py-1.5 bg-formalio-100 text-formalio-700 rounded-lg font-medium">Tous</button>
+            <button className="text-xs px-3 py-1.5 bg-surface-100 text-surface-600 rounded-lg">Vérifiés</button>
+            <button className="text-xs px-3 py-1.5 bg-amber-100 text-amber-700 rounded-lg">En revue</button>
+          </div>
+        </div>
+        <div className="overflow-x-auto">
+          <table className="w-full">
+            <thead className="bg-surface-50">
+              <tr className="border-b border-surface-200 text-left text-[11px] font-semibold uppercase tracking-wider text-surface-400">
+                <th className="px-6 py-3">Comptable</th>
+                <th className="px-6 py-3">Cabinet</th>
+                <th className="px-6 py-3">Ville</th>
+                <th className="px-6 py-3">Spécialité</th>
+                <th className="px-6 py-3">Clients</th>
+                <th className="px-6 py-3">Note</th>
+                <th className="px-6 py-3">Statut</th>
+                <th className="px-6 py-3">Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              {oneccaAccountants.map((acc) => (
+                <tr key={acc.id} className="border-b border-surface-100 text-sm hover:bg-formalio-50/30 transition-colors">
+                  <td className="px-6 py-4">
+                    <div className="flex items-center gap-3">
+                      <div className="w-9 h-9 bg-formalio-100 rounded-full flex items-center justify-center text-xs font-bold text-formalio-700">
+                        {acc.name.split(' ').slice(-2).map(n => n[0]).join('')}
+                      </div>
+                      <div>
+                        <p className="font-semibold text-surface-900">{acc.name}</p>
+                        <p className="text-xs text-formalio-600">{acc.badge}</p>
+                      </div>
+                    </div>
+                  </td>
+                  <td className="px-6 py-4 text-surface-700">{acc.firm}</td>
+                  <td className="px-6 py-4 text-surface-600">{acc.city}</td>
+                  <td className="px-6 py-4 text-surface-600 text-xs">{acc.specialty}</td>
+                  <td className="px-6 py-4 font-semibold">{acc.clients}</td>
+                  <td className="px-6 py-4">
+                    <div className="flex items-center gap-1">
+                      <Star className="w-3.5 h-3.5 text-amber-500 fill-amber-500" />
+                      <span className="font-semibold">{acc.rating}</span>
+                    </div>
+                  </td>
+                  <td className="px-6 py-4">
+                    <span className={`text-xs font-semibold px-2.5 py-1 rounded-full ${acc.status === 'vérifié' ? 'bg-formalio-100 text-formalio-700' : 'bg-amber-100 text-amber-700'}`}>
+                      {acc.status === 'vérifié' ? '✓ Vérifié ONECCA' : '⏳ En revue'}
+                    </span>
+                  </td>
+                  <td className="px-6 py-4">
+                    <div className="flex gap-2">
+                      <button onClick={() => doAction('Profil comptable ouvert')} className="text-xs text-formalio-700 font-medium hover:underline">Voir</button>
+                      <button onClick={() => doAction('Suspension envoyée')} className="text-xs text-danger-600 font-medium hover:underline">Suspendre</button>
+                    </div>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  );
+
+  const views: Record<AdminView, React.ReactNode> = { overview: <OverviewPage />, users: <UsersPage />, support: <SupportPage />, system: <SystemPage />, fraud: <FraudPage />, analytics: <AnalyticsPage />, accountants: <AccountantsPage /> };
   return <AdminShell>{views[activeItem]}</AdminShell>;
 };
 
